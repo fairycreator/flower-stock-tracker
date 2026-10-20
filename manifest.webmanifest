@@ -3,7 +3,7 @@
   "short_name": "Florén склад",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#EEF2EC",
-  "theme_color": "#1E5A42",
+  "background_color": "#F4F4EF",
+  "theme_color": "#4F7A63",
   "icons": [{ "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
 }

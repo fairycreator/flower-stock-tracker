@@ -705,7 +705,7 @@ async function pdfPriceList(kind){try{const ps=pset();const rows=sortFlowers(flo
  if(ps.show!=='excl')cols.push(t('sellShortCol')+' '+t('inclVat'));if(ps.show!=='incl')cols.push(t('sellShortCol')+' '+t('exclVat'));
  cols.push(t('perBunch')+' '+(ps.show==='excl'?t('exclVat'):t('inclVat')));if(internal)cols.push(t('markup'),t('margin'));
  const body=[];let tier=null,g=null;
- for(const [id,f] of rows){const tr=f.tier==='luxury'?'luxury':'regular';if(tr!==tier){tier=tr;g=null;body.push(grpRow(t(tr),cols.length,[30,90,66].map(x=>x+150)))}
+ for(const [id,f] of rows){const tr=f.tier==='luxury'?'luxury':'regular';if(tr!==tier){tier=tr;g=null;body.push(grpRow(t(tr),cols.length,[228,238,230]))}
   if(f.group!==g){g=f.group;body.push(grpRow(gname(f.group),cols.length))}
   const s=sellOf(id),c=lastPrice(id),b=bunchOf(id);const r=[f.variety||gname(f.group),f.length||'',cname(f.color)];if(internal)r.push(c!=null?nf(c,2):'-');
   if(ps.show!=='excl')r.push(nf(s,2));if(ps.show!=='incl')r.push(nf(exVat(s),2));
@@ -739,13 +739,13 @@ async function pdfDoc(title,sub){await loadScript(CDN.jspdf);await loadScript(CD
  d.addFileToVFS('DejaVu.ttf',r);d.addFont('DejaVu.ttf','DejaVu','normal');d.addFileToVFS('DejaVu-Bold.ttf',b);d.addFont('DejaVu-Bold.ttf','DejaVu','bold');
  d.setFont('DejaVu','bold');d.setFontSize(17);d.text(P(title),14,17);d.setFont('DejaVu','normal');d.setFontSize(9.5);d.setTextColor(90);d.text(P(sub),14,23);d.setTextColor(0);
  d.setFontSize(8);d.text(P('Florén Studio ApS · '+new Date().toLocaleString(loc())),196,10,{align:'right'});return d}
-const TS={styles:{font:'DejaVu',fontSize:8.5,cellPadding:1.6,lineColor:[200,206,200],lineWidth:.15},headStyles:{fillColor:[30,90,66],textColor:255,fontStyle:'bold'},theme:'grid',margin:{left:14,right:14}};
-const grpRow=(txt,n,fill)=>[{content:P(txt),colSpan:n,styles:{fillColor:fill||[226,233,224],fontStyle:'bold'}}];
+const TS={styles:{font:'DejaVu',fontSize:8.5,cellPadding:1.6,lineColor:[200,206,200],lineWidth:.15},headStyles:{fillColor:[79,122,99],textColor:255,fontStyle:'bold'},theme:'grid',margin:{left:14,right:14}};
+const grpRow=(txt,n,fill)=>[{content:P(txt),colSpan:n,styles:{fillColor:fill||[240,242,236],fontStyle:'bold'}}];
 async function savePdf(d,name){if(!dls){toast(t('dlNo'));return}try{await dls.save({filename:name,data:d.output('blob')});toast(t('dlOk'))}catch(e){if(e?.code!=='declined')toast(errMsg(e))}}
 async function pdfBuy(day){try{const dl=dayLabel(day);const rows=sheetRows(S.week,day).filter(r=>r.order>0||S.showAll);const h=hist(S.week);
  const d=await pdfDoc(`${t('buySheet')} – ${t('day')} ${day}`,`${t('days')[dl.wd-1]} ${fdate(dl.date,{day:'numeric',month:'long',year:'numeric'})} ${dl.time} · ${t('week')} ${wnum(S.week)} · ${h.dataWeeks<8?t('lowConf')+' ('+h.dataWeeks+')':t('okConf',{n:h.dataWeeks})}`);
  const head=[[t('color'),t('variety'),'cm',t('have'),t('need'),t('order')+' ('+t('bundles')+')',t('stems'),t('price'),t('estTotal'),'✓'].map(P)];const body=[];let sup=null,tier=null,sum=0,cost=0;
- for(const r of rows){const sp=r.f.supplier||'—';if(sp!==sup){sup=sp;tier=null;body.push(grpRow(sp,10,[30,90,66].map(x=>x+150)))}const tr=r.f.tier==='luxury'?'luxury':'regular';if(tr!==tier){tier=tr;body.push(grpRow(t(tr),10))}
+ for(const r of rows){const sp=r.f.supplier||'—';if(sp!==sup){sup=sp;tier=null;body.push(grpRow(sp,10,[228,238,230]))}const tr=r.f.tier==='luxury'?'luxury':'regular';if(tr!==tier){tier=tr;body.push(grpRow(t(tr),10))}
   sum+=r.stems;cost+=r.cost||0;body.push([cname(r.f.color),(r.f.variety||gname(r.f.group))+' · '+gname(r.f.group),r.f.length||'',nf(r.have)+(r.haveEst?' '+t('est'):''),r.need==null?'-':nf(r.need),r.order,nf(r.stems),r.pp!=null?nf(r.pp,2):'-',r.cost!=null?nf(r.cost):'-',''].map(P))}
  if(!body.length)body.push(grpRow(t('noRows'),10,[255,255,255]));
  d.autoTable(Object.assign({},TS,{startY:28,head,body,columnStyles:{2:{halign:'right'},3:{halign:'right'},4:{halign:'right'},5:{halign:'right',fontStyle:'bold'},6:{halign:'right'},7:{halign:'right'},8:{halign:'right'},9:{cellWidth:8}}}));
