@@ -62,7 +62,7 @@ const T={uk:{
  reasonReq:'Оберіть причину списання',split:'+ Розділити (інший стан)',removeEntry:'Прибрати',
  expected:'Очікується',filterStock:'На складі',filterAll:'Усі',saveCount:'Зберегти підрахунок',savedCount:'Збережено · переходить у тиждень {w}',draft:'Чернетка – зберігається автоматично',
  missingReasons:'{n} списань без причини',countSaved:'Підрахунок збережено. Залишки стали стартовим запасом тижня {w}.',
- bought:'Куплено',used:'Використано',left:'Залишок',waste:'Списання',cps:'Ціна/шт',income:'Дохід',cost:'Витрати',open:'Старт',
+ bought:'Куплено',used:'Використано',left:'Залишок',waste:'Списання',cps:'Ціна/шт',income:'Дохід без ПДВ',cost:'Витрати',open:'Старт',
  notCounted:'Тиждень ще не пораховано. Використання й списання з’являться після збереження підрахунку.',byTier:'За рівнем',byColor:'За кольором',byFlower:'За квіткою',
  nextOrder:'Пропозиція на наступний тиждень',toBuying:'Відкрити списки закупівлі',addSell:'додайте ціну продажу',
  settings:'Налаштування',buyDays:'Дні закупівлі',weekday:'День тижня',time:'Час',share:'Частка тижневої закупівлі в день 1 (коли немає історії)',
@@ -73,7 +73,7 @@ const T={uk:{
  readOnly:'Немає доступу на запис.',saved:'Збережено',dlNo:'Завантаження недоступне.',dlOk:'Файл готовий',
  aiNo:'Автоматичне читання ще не налаштоване. Додайте рядки вручну.',days:['пн','вт','ср','чт','пт','сб','нд'],
  starterNote:'{n} квітів ще не перевірено (колір, рівень і розмір пачки – припущення). Натисніть, щоб переглянути.',
- prices:'Ціни',pricesTitle:'Ціни продажу',pricesHint:'Ціна за стебло без ПДВ. З неї рахуються ціна з ПДВ, ціна пачки, націнка й дохід в «Огляді».',vat:'ПДВ (moms), %',rounding:'Округлення, DKK',markup:'Націнка ×',applyMarkup:'Застосувати націнку',toEmpty:'лише де немає ціни',toAll:'до всіх у списку',applied:'Ціни оновлено: {n}',noCostHint:'без закупівельної ціни – введіть вручну',allTiers:'Усі',onlyNoPrice:'Лише без ціни',costStem:'Собівартість/шт',sellStem:'Продаж/шт без ПДВ',inclVat:'з ПДВ',perBunch:'Пачка',margin:'Маржа',priceList:'Прайс-лист',plCustomer:'Для клієнтів (PDF)',plInternal:'Внутрішній з собівартістю (PDF)',plCsv:'Прайс CSV',plShow:'Показувати в прайсі',plIncl:'Ціни з ПДВ',plExcl:'Ціни без ПДВ',plBoth:'Обидві',plTitle:'Прайс-лист',plValid:'Ціни дійсні на {d}. Залежать від сезону та наявності.',plNone:'Ще немає квітів із ціною продажу.',sellShort:'продаж',withPrice:'з ціною',
+ prices:'Ціни',pricesTitle:'Ціни продажу',pricesHint:'Вводьте кінцеву ціну за стебло з ПДВ – ту, що платить клієнт. Ціна без ПДВ, ціна пачки, націнка й маржа рахуються автоматично. Базова націнка: собівартість × 3 (з ПДВ).',vat:'ПДВ (moms), %',rounding:'Округлення, DKK',markup:'Націнка ×',applyMarkup:'Застосувати націнку',toEmpty:'лише де немає ціни',toAll:'до всіх у списку',applied:'Ціни оновлено: {n}',noCostHint:'без закупівельної ціни – введіть вручну',allTiers:'Усі',onlyNoPrice:'Лише без ціни',costStem:'Собівартість/шт',sellStem:'Ціна продажу/шт з ПДВ',exclVat:'без ПДВ',sellShortCol:'Ціна/шт',inclVat:'з ПДВ',perBunch:'Пачка',margin:'Маржа',priceList:'Прайс-лист',plCustomer:'Для клієнтів (PDF)',plInternal:'Внутрішній з собівартістю (PDF)',plCsv:'Прайс CSV',plShow:'Показувати в прайсі',plIncl:'Ціни з ПДВ',plExcl:'Ціни без ПДВ',plBoth:'Обидві',plTitle:'Прайс-лист',plValid:'Ціни дійсні на {d}. Залежать від сезону та наявності.',plNone:'Ще немає квітів із ціною продажу.',sellShort:'продаж',withPrice:'з ціною',
  starter:'Стартовий список',fromInv:'З рахунку',reasonsT:'Причини',none:'—',stockTip:'старт + куплено за тиждень',
  dupFile:'Цей рахунок уже завантажено.',dupNo:'Рахунок {no} уже є.',pdfPriceNote:'ціна з останнього рахунку; «-» = ціни ще немає',coolerNote:'Впишіть кількість і поставте позначку. Кожне списання потребує причини.',reasonCol:'Причина',
  signIn:'Увійти',signUp:'Створити акаунт',email:'Email',password:'Пароль',signOut:'Вийти',signInTitle:'Склад квітів Florén',signInHint:'Увійдіть акаунтом команди.',
@@ -123,7 +123,7 @@ week:'Week',flowers:'Flowers',buying:'Buying',count:'Count',insights:'Insights',
  reasonReq:'Pick a reason for the discard',split:'+ Split (another condition)',removeEntry:'Remove',
  expected:'Expected',filterStock:'In stock',filterAll:'All',saveCount:'Save count',savedCount:'Saved · carries into week {w}',draft:'Draft – saved as you go',
  missingReasons:'{n} discard(s) missing a reason',countSaved:'Count saved. Leftovers are now opening stock for week {w}.',
- bought:'Bought',used:'Used',left:'Left',waste:'Waste',cps:'Cost/stem',income:'Income',cost:'Cost',open:'Opening',
+ bought:'Bought',used:'Used',left:'Left',waste:'Waste',cps:'Cost/stem',income:'Income excl. VAT',cost:'Cost',open:'Opening',
  notCounted:'This week is not counted yet. Used and waste appear once the count is saved.',byTier:'By tier',byColor:'By colour',byFlower:'By flower',
  nextOrder:'Suggested for next week',toBuying:'Open buying sheets',addSell:'add selling price',
  settings:'Settings',buyDays:'Buying days',weekday:'Weekday',time:'Time',share:'Share of the week’s order on day 1 (when there is no history)',
@@ -133,7 +133,7 @@ week:'Week',flowers:'Flowers',buying:'Buying',count:'Count',insights:'Insights',
  connecting:'Connecting…',offline:'Can’t reach the database. Check the connection and reload.',
  readOnly:'You can view but not save.',saved:'Saved',dlNo:'Download isn’t available here.',dlOk:'File ready',
  aiNo:'Automatic reading isn’t available. Add lines by hand.',days:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
- prices:'Prices',pricesTitle:'Selling prices',pricesHint:'Price per stem excluding VAT. Price incl. VAT, bunch price, markup and income in Insights are calculated from it.',vat:'VAT (moms), %',rounding:'Rounding, DKK',markup:'Markup ×',applyMarkup:'Apply markup',toEmpty:'only where there is no price',toAll:'to everything in the list',applied:'Prices updated: {n}',noCostHint:'no purchase price – enter by hand',allTiers:'All',onlyNoPrice:'Only without price',costStem:'Cost/stem',sellStem:'Sell/stem excl. VAT',inclVat:'incl. VAT',perBunch:'Bunch',margin:'Margin',priceList:'Price list',plCustomer:'For customers (PDF)',plInternal:'Internal with cost (PDF)',plCsv:'Price list CSV',plShow:'Show in price list',plIncl:'Prices incl. VAT',plExcl:'Prices excl. VAT',plBoth:'Both',plTitle:'Price list',plValid:'Prices valid on {d}. Subject to season and availability.',plNone:'No flowers with a selling price yet.',sellShort:'sell',withPrice:'with price',
+ prices:'Prices',pricesTitle:'Selling prices',pricesHint:'Enter the final price per stem including VAT – what the customer pays. Price excl. VAT, pack price, markup and margin are calculated. Base markup: cost × 3 (incl. VAT).',vat:'VAT (moms), %',rounding:'Rounding, DKK',markup:'Markup ×',applyMarkup:'Apply markup',toEmpty:'only where there is no price',toAll:'to everything in the list',applied:'Prices updated: {n}',noCostHint:'no purchase price – enter by hand',allTiers:'All',onlyNoPrice:'Only without price',costStem:'Cost/stem',sellStem:'Selling price/stem incl. VAT',exclVat:'excl. VAT',sellShortCol:'Price/stem',inclVat:'incl. VAT',perBunch:'Bunch',margin:'Margin',priceList:'Price list',plCustomer:'For customers (PDF)',plInternal:'Internal with cost (PDF)',plCsv:'Price list CSV',plShow:'Show in price list',plIncl:'Prices incl. VAT',plExcl:'Prices excl. VAT',plBoth:'Both',plTitle:'Price list',plValid:'Prices valid on {d}. Subject to season and availability.',plNone:'No flowers with a selling price yet.',sellShort:'sell',withPrice:'with price',
  starterNote:'{n} flowers are not confirmed yet (colour, tier and bunch size are guesses). Tap to review.',
  starter:'Starter list',fromInv:'From invoice',reasonsT:'Reasons',none:'—',stockTip:'opening + bought this week'
 }};
@@ -163,7 +163,7 @@ const S={tab:'home',ftab:'list',tier:'luxury',week:TODAY_WK,q:'',fg:'',fc:'',fl:
  flowers:{},settings:null,purch:{},cl:{},cm:{},orders:{},invoices:{},conn:'wait',canWrite:true,auth:'wait',user:null,team:[],loginMode:'in',modal:null,confirm:null,upload:null,ver:0};
 let db=null,sampler=null,assets=null,dls=null,sb=null;
 const local={};const pend={};const inflight={};
-const settings=()=>Object.assign({days:[{wd:2,time:'06:00'},{wd:5,time:'06:00'}],share1:0.5,prices:{vat:25,round:0.5,markup:2.5,show:'both'}},S.settings||{},(typeof local!=='undefined'&&local['settings/main'])||{});
+const settings=()=>Object.assign({days:[{wd:2,time:'06:00'},{wd:5,time:'06:00'}],share1:0.5,prices:{vat:25,round:0.5,markup:3,show:'incl'}},S.settings||{},(typeof local!=='undefined'&&local['settings/main'])||{});
 try{const h=location.hash.slice(1);if(['home','flowers','invoices','buying','count','insights','more'].includes(h))S.tab=h;if(h==='prices'){S.tab='flowers';S.ftab='prices'}}catch(e){}
 
 /* ---------- toast ---------- */
@@ -196,7 +196,7 @@ function weekData(wk){return cached('wd'+wk,()=>{
  const counted=!!S.cm[wk]?.saved;
  for(const id in cls){const c=cls[id];if(c.wk!==wk)continue;const r=g(c.fid);r.counted=true;for(const e of c.entries||[]){const s=eStems(e,c.fid);r.left+=s;if(e.c==='bad'){r.bad+=s;const k=e.r||'other';r.reasons[k]=(r.reasons[k]||0)+s}else{r.usableLeft+=s;if(e.c==='sell')r.sellLeft+=s}}}
  for(const f in m){const r=m[f];r.used=counted?Math.max(0,r.open+r.bought-r.left):null;r.wastePct=counted&&(r.open+r.bought)>0?r.bad/(r.open+r.bought):null;r.cps=r.costStems?r.cost/r.costStems:null;
-  const sp=F(f)?.sell;r.income=counted&&sp!=null&&sp!==''?r.used*Number(sp):null}
+  const sp=F(f)?.sell;r.income=counted&&sp!=null&&sp!==''?r.used*Number(sp)/(1+(Number(settings().prices?.vat??25))/100):null}
  return {rows:m,counted}})}
 function savedWeeksBefore(wk){return Object.keys(S.cm).filter(w=>S.cm[w]?.saved&&w<wk).sort()}
 function hist(wk){return cached('h'+wk,()=>{const weeks=[];for(let i=1;i<=12;i++){const w=addW(wk,-i);if(S.cm[w]?.saved)weeks.push(w)}
@@ -660,8 +660,8 @@ function nextSugg(wk){const nx=addW(wk,1);const items=flowerList().map(([id,f])=
 /* ---------- prices ---------- */
 const sellDraft={};const sellT={};
 function sellOf(id){if(id in sellDraft){const v=sellDraft[id];return v===''||v==null||isNaN(Number(v))?null:Number(v)}const s=F(id)?.sell;return s==null||s===''?null:Number(s)}
-function pset(){return Object.assign({vat:25,round:0.5,markup:2.5,show:'both'},settings().prices||{})}
-const withVat=v=>v==null?null:v*(1+pset().vat/100);
+function pset(){return Object.assign({vat:25,round:0.5,markup:3,show:'incl'},settings().prices||{})}
+const exVat=v=>v==null?null:v/(1+pset().vat/100);
 function roundUp(v){const r=Number(pset().round)||0;return r>0?Math.ceil(v/r-1e-9)*r:Math.round(v*100)/100}
 function setSell(id,val){sellDraft[id]=val;clearTimeout(sellT[id]);sellT[id]=setTimeout(async()=>{const v=sellDraft[id];const n=v===''||v==null||isNaN(Number(v))?null:Math.round(Number(v)*100)/100;
  const ok=await upd('flowers/'+id,{sell:n});if(ok)setTimeout(()=>{if(sellDraft[id]===v){delete sellDraft[id];bump()}},1500)},700);bump()}
@@ -674,7 +674,7 @@ function vPrices(){const ps=pset();const rows=priceRows();const all=flowerList()
  let h=`<h2 class="secth" style="margin-top:14px">${t('pricesTitle')}</h2><p class="small muted" style="max-width:65ch">${t('pricesHint')}</p>
  <div class="card"><div class="pgrid">
   <div class="field"><label for="ps_vat">${t('vat')}</label><input id="ps_vat" type="number" inputmode="decimal" min="0" step="1" value="${ps.vat}" data-pset="vat"></div>
-  <div class="field"><label for="ps_round">${t('rounding')}</label><select id="ps_round" data-pset="round">${[0,0.25,0.5,1,5].map(r=>`<option value="${r}" ${Number(ps.round)===r?'selected':''}>${r?nf(r,r<1?2:0):'0,01'}</option>`).join('')}</select></div>
+  <div class="field"><label for="ps_round">${t('rounding')}</label><select id="ps_round" data-pset="round">${[0,0.5,1,5,10].map(r=>`<option value="${r}" ${Number(ps.round)===r?'selected':''}>${r?nf(r,r<1?2:0):'0,01'}</option>`).join('')}</select></div>
   <div class="field"><label for="ps_markup">${t('markup')}</label><input id="ps_markup" type="number" inputmode="decimal" min="1" step="0.1" value="${ps.markup}" data-pset="markup"></div>
   <div class="field"><label for="ps_show">${t('plShow')}</label><select id="ps_show" data-pset="show"><option value="both" ${ps.show==='both'?'selected':''}>${t('plBoth')}</option><option value="incl" ${ps.show==='incl'?'selected':''}>${t('plIncl')}</option><option value="excl" ${ps.show==='excl'?'selected':''}>${t('plExcl')}</option></select></div>
  </div>
@@ -682,15 +682,15 @@ function vPrices(){const ps=pset();const rows=priceRows();const all=flowerList()
  <div class="card"><h3>${t('priceList')} <span class="muted small">${priced}/${all.length} ${t('withPrice')}</span></h3><div class="row"><button class="btn primary" data-act="plPdf" data-k="customer">${t('plCustomer')}</button><button class="btn" data-act="plPdf" data-k="internal">${t('plInternal')}</button><button class="btn" data-act="csv" data-k="prices">${t('plCsv')}</button></div></div>
  <div class="seg" role="group">${[['',t('allTiers')],['luxury',t('luxury')],['regular',t('regular')]].map(([k,l])=>`<button ${k==='luxury'?'class="lux"':''} data-act="ptier" data-k="${k}" aria-pressed="${(S.ptier||'')===k}">${l}</button>`).join('')}</div>
  <div class="row"><input id="pq" type="search" style="flex:1;min-width:200px" placeholder="${esc(t('search'))}" value="${esc(S.pq||'')}" data-bind="pq"><button class="chip" data-act="pNoPrice" aria-pressed="${!!S.pNoPrice}">${t('onlyNoPrice')}</button></div>
- <div class="tblwrap"><table class="ptable"><thead><tr><th>${t('variety')}</th><th>${t('costStem')}</th><th>${t('sellStem')}</th><th>${t('inclVat')}</th><th>${t('perBunch')}</th><th>${t('markup')}</th><th>${t('margin')}</th></tr></thead><tbody>`;
+ <div class="tblwrap"><table class="ptable"><thead><tr><th>${t('variety')}</th><th>${t('costStem')}</th><th>${t('sellStem')}</th><th>${t('exclVat')}</th><th>${t('perBunch')} ${t('inclVat')}</th><th>${t('markup')}</th><th>${t('margin')}</th></tr></thead><tbody>`;
  let tier=null,col=null;
  for(const [id,f] of rows){const tr=f.tier==='luxury'?'luxury':'regular';if(tr!==tier){tier=tr;col=null;h+=`<tr class="grp"><td colspan="7"><span class="badge ${tr==='luxury'?'b-lux':'b-ok'}">${t(tr)}</span></td></tr>`}
   if(f.color!==col){col=f.color;h+=`<tr class="sub"><td colspan="7">${swatch(f.color)} ${esc(cname(f.color))}</td></tr>`}
-  const cost=lastPrice(id),s=sellOf(id),v=id in sellDraft?sellDraft[id]:(s??'');const mk=cost&&s?s/cost:null,mg=cost&&s?(s-cost)/s:null;
+  const cost=lastPrice(id),s=sellOf(id),v=id in sellDraft?sellDraft[id]:(s??'');const mk=cost&&s?s/cost:null,mg=cost&&s?(exVat(s)-cost)/exVat(s):null;
   h+=`<tr><td><b>${esc(f.variety||gname(f.group))}</b> <span class="muted">${f.length?f.length+' cm':''}</span><div class="small muted">${esc(gname(f.group))} · ${bunchOf(id)}/${t('bundles')}</div></td>
   <td class="num">${cost!=null?dkk(cost,2):`<span class="small muted" title="${esc(t('noCostHint'))}">—</span>`}</td>
   <td><input id="sell_${id}" class="sellin" type="number" inputmode="decimal" min="0" step="0.5" value="${esc(v)}" data-sell="${id}" aria-label="${esc(t('sellStem')+' '+(f.variety||''))}" placeholder="${cost!=null?nf(roundUp(cost*ps.markup),2):''}"></td>
-  <td class="num">${s!=null?dkk(withVat(s),2):'—'}</td><td class="num">${s!=null?dkk(withVat(s)*bunchOf(id),0):'—'}</td>
+  <td class="num muted">${s!=null?dkk(exVat(s),2):'—'}</td><td class="num">${s!=null?dkk(s*bunchOf(id),0):'—'}</td>
   <td class="num">${mk?'×'+nf(mk,1):'—'}</td><td class="num" style="color:${mg!=null&&mg<.4?'var(--warn)':'inherit'}">${mg!=null?pct(mg):'—'}</td></tr>`}
  if(!rows.length)h+=`<tr><td colspan="7" class="muted" style="text-align:center">${t('noMatch')}</td></tr>`;
  return h+'</tbody></table></div>'}
@@ -702,14 +702,14 @@ async function pdfPriceList(kind){try{const ps=pset();const rows=sortFlowers(flo
  const internal=kind==='internal';const today=new Date();const ds=new Intl.DateTimeFormat(loc(),{day:'numeric',month:'long',year:'numeric'}).format(today);
  const d=await pdfDoc(`Florén · ${t('plTitle')}`,t('plValid',{d:ds})+(ps.show!=='excl'?` · ${t('vat')} ${ps.vat}`:''));
  const cols=[t('variety'),'cm',t('color')];if(internal)cols.push(t('costStem'));
- if(ps.show!=='incl')cols.push(t('sellStem'));if(ps.show!=='excl')cols.push(t('sellStem').split(' ')[0]+' '+t('inclVat'));
- cols.push(t('perBunch')+(ps.show==='excl'?'':' '+t('inclVat')));if(internal)cols.push(t('markup'),t('margin'));
+ if(ps.show!=='excl')cols.push(t('sellShortCol')+' '+t('inclVat'));if(ps.show!=='incl')cols.push(t('sellShortCol')+' '+t('exclVat'));
+ cols.push(t('perBunch')+' '+(ps.show==='excl'?t('exclVat'):t('inclVat')));if(internal)cols.push(t('markup'),t('margin'));
  const body=[];let tier=null,g=null;
  for(const [id,f] of rows){const tr=f.tier==='luxury'?'luxury':'regular';if(tr!==tier){tier=tr;g=null;body.push(grpRow(t(tr),cols.length,[30,90,66].map(x=>x+150)))}
   if(f.group!==g){g=f.group;body.push(grpRow(gname(f.group),cols.length))}
   const s=sellOf(id),c=lastPrice(id),b=bunchOf(id);const r=[f.variety||gname(f.group),f.length||'',cname(f.color)];if(internal)r.push(c!=null?nf(c,2):'-');
-  if(ps.show!=='incl')r.push(nf(s,2));if(ps.show!=='excl')r.push(nf(withVat(s),2));
-  r.push(`${nf(ps.show==='excl'?s*b:withVat(s)*b,0)} (${b} ${t('stems')})`);if(internal)r.push(c?'×'+nf(s/c,1):'-',c?pct((s-c)/s):'-');body.push(r.map(P))}
+  if(ps.show!=='excl')r.push(nf(s,2));if(ps.show!=='incl')r.push(nf(exVat(s),2));
+  r.push(`${nf(ps.show==='excl'?exVat(s)*b:s*b,0)} (${b} ${t('stems')})`);if(internal)r.push(c?'×'+nf(s/c,1):'-',c?pct((exVat(s)-c)/exVat(s)):'-');body.push(r.map(P))}
  const right={};for(let i=3;i<cols.length;i++)right[i]={halign:'right'};
  d.autoTable(Object.assign({},TS,{startY:28,head:[cols.map(P)],body,columnStyles:right}));
  d.setFontSize(8);d.setTextColor(90);d.text(P('DKK · Florén Studio ApS'),14,d.lastAutoTable.finalY+6);
@@ -780,7 +780,7 @@ async function csv(kind){let rows=[],name='';const fl=S.flowers;
  if(kind==='lines'){name='fakturalinjer';rows=[['invoice_id','supplier','invoice_no','invoice_date','week','day','line','status','kind','text','flower_id','variety','stems','price_per_stem_dkk','total_dkk','original_file']];for(const [id,i] of Object.entries(S.invoices))(i.lines||[]).forEach((l,n)=>rows.push([id,i.supplier,i.no,i.date,i.wk,i.day,n,l.status,l.kind,l.text,l.fid||'',l.fid&&fl[l.fid]?fl[l.fid].variety:'',l.stems,cnum(l.ppStem),cnum(l.total),i.fileName||'']))}
  if(kind==='counts'){name='optaellinger';rows=[['week','saved','flower_id','tier','group','variety','colour','length_cm','supplier','bunches','loose','stems','condition','reason']];for(const c of Object.values(allCL()))(c.entries||[]).forEach(e=>rows.push([c.wk,S.cm[c.wk]?.saved?'yes':'no',...fcols(c.fid),e.b||0,e.l||0,eStems(e,c.fid),t(e.c),e.c==='bad'?(e.r==='other'&&e.rt?e.rt:t(e.r||'other')):'']))}
  if(kind==='prices'){name='prisliste';const ps=pset();rows=[['flower_id','tier','group','variety','colour','length_cm','supplier','stems_per_bunch','cost_per_stem_dkk','sell_per_stem_excl_vat_dkk','sell_per_stem_incl_vat_dkk','bunch_incl_vat_dkk','markup','margin_pct']];
-  for(const [id] of sortFlowers(flowerList())){const s=sellOf(id),c=lastPrice(id),b=bunchOf(id);rows.push([...fcols(id),b,cnum(c),cnum(s),cnum(withVat(s)),s!=null?cnum(withVat(s)*b):'',c&&s?cnum(s/c):'',c&&s?cnum((s-c)/s*100):''])}}
+  for(const [id] of sortFlowers(flowerList())){const s=sellOf(id),c=lastPrice(id),b=bunchOf(id);rows.push([...fcols(id),b,cnum(c),cnum(exVat(s)),cnum(s),s!=null?cnum(s*b):'',c&&s?cnum(s/c):'',c&&s?cnum((exVat(s)-c)/exVat(s)*100):''])}}
  if(kind==='stats'){name='ugetal';rows=[['week','flower_id','tier','group','variety','colour','length_cm','supplier','opening','bought','used','left','not_usable','waste_pct','cost_dkk','cost_per_stem_dkk','income_dkk']];
   const weeks=[...new Set([...Object.values(S.purch).map(p=>p.wk),...Object.keys(S.cm)])].sort();for(const w of weeks){const wd=weekData(w);for(const [fid,r] of Object.entries(wd.rows))if(fl[fid])rows.push([w,...fcols(fid),r.open,r.bought,r.used??'',wd.counted?r.left:'',wd.counted?r.bad:'',r.wastePct!=null?cnum(r.wastePct*100):'',cnum(r.cost),cnum(r.cps),cnum(r.income)])}}
  const text='﻿'+rows.map(r=>r.map(cq).join(';')).join('\r\n');
