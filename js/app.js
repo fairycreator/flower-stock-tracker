@@ -67,6 +67,7 @@ const T={uk:{
  readOnly:'Немає доступу на запис.',saved:'Збережено',dlNo:'Завантаження недоступне.',dlOk:'Файл готовий',
  aiNo:'Автоматичне читання ще не налаштоване. Додайте рядки вручну.',days:['пн','вт','ср','чт','пт','сб','нд'],
  starterNote:'{n} квітів ще не перевірено (колір, рівень і розмір пачки – припущення). Натисніть, щоб переглянути.',
+ prices:'Ціни',pricesTitle:'Ціни продажу',pricesHint:'Ціна за стебло без ПДВ. З неї рахуються ціна з ПДВ, ціна пачки, націнка й дохід в «Огляді».',vat:'ПДВ (moms), %',rounding:'Округлення, DKK',markup:'Націнка ×',applyMarkup:'Застосувати націнку',toEmpty:'лише де немає ціни',toAll:'до всіх у списку',applied:'Ціни оновлено: {n}',noCostHint:'без закупівельної ціни – введіть вручну',allTiers:'Усі',onlyNoPrice:'Лише без ціни',costStem:'Собівартість/шт',sellStem:'Продаж/шт без ПДВ',inclVat:'з ПДВ',perBunch:'Пачка',margin:'Маржа',priceList:'Прайс-лист',plCustomer:'Для клієнтів (PDF)',plInternal:'Внутрішній з собівартістю (PDF)',plCsv:'Прайс CSV',plShow:'Показувати в прайсі',plIncl:'Ціни з ПДВ',plExcl:'Ціни без ПДВ',plBoth:'Обидві',plTitle:'Прайс-лист',plValid:'Ціни дійсні на {d}. Залежать від сезону та наявності.',plNone:'Ще немає квітів із ціною продажу.',sellShort:'продаж',withPrice:'з ціною',
  starter:'Стартовий список',fromInv:'З рахунку',reasonsT:'Причини',none:'—',stockTip:'старт + куплено за тиждень',
  dupFile:'Цей рахунок уже завантажено.',dupNo:'Рахунок {no} уже є.',pdfPriceNote:'ціна з останнього рахунку; «-» = ціни ще немає',coolerNote:'Впишіть кількість і поставте позначку. Кожне списання потребує причини.',reasonCol:'Причина',
  signIn:'Увійти',signUp:'Створити акаунт',email:'Email',password:'Пароль',signOut:'Вийти',signInTitle:'Склад квітів Florén',signInHint:'Увійдіть акаунтом команди.',
@@ -120,6 +121,7 @@ week:'Week',flowers:'Flowers',buying:'Buying',count:'Count',insights:'Insights',
  connecting:'Connecting…',offline:'Can’t reach the database. Check the connection and reload.',
  readOnly:'You can view but not save.',saved:'Saved',dlNo:'Download isn’t available here.',dlOk:'File ready',
  aiNo:'Automatic reading isn’t available. Add lines by hand.',days:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+ prices:'Prices',pricesTitle:'Selling prices',pricesHint:'Price per stem excluding VAT. Price incl. VAT, bunch price, markup and income in Insights are calculated from it.',vat:'VAT (moms), %',rounding:'Rounding, DKK',markup:'Markup ×',applyMarkup:'Apply markup',toEmpty:'only where there is no price',toAll:'to everything in the list',applied:'Prices updated: {n}',noCostHint:'no purchase price – enter by hand',allTiers:'All',onlyNoPrice:'Only without price',costStem:'Cost/stem',sellStem:'Sell/stem excl. VAT',inclVat:'incl. VAT',perBunch:'Bunch',margin:'Margin',priceList:'Price list',plCustomer:'For customers (PDF)',plInternal:'Internal with cost (PDF)',plCsv:'Price list CSV',plShow:'Show in price list',plIncl:'Prices incl. VAT',plExcl:'Prices excl. VAT',plBoth:'Both',plTitle:'Price list',plValid:'Prices valid on {d}. Subject to season and availability.',plNone:'No flowers with a selling price yet.',sellShort:'sell',withPrice:'with price',
  starterNote:'{n} flowers are not confirmed yet (colour, tier and bunch size are guesses). Tap to review.',
  starter:'Starter list',fromInv:'From invoice',reasonsT:'Reasons',none:'—',stockTip:'opening + bought this week'
 }};
@@ -149,8 +151,8 @@ const S={tab:'flowers',tier:'luxury',week:TODAY_WK,q:'',fg:'',fc:'',fl:'',onlyUn
  flowers:{},settings:null,purch:{},cl:{},cm:{},orders:{},invoices:{},conn:'wait',canWrite:true,auth:'wait',user:null,team:[],loginMode:'in',modal:null,confirm:null,upload:null,ver:0};
 let db=null,sampler=null,assets=null,dls=null,sb=null;
 const local={};const pend={};const inflight={};
-const settings=()=>Object.assign({days:[{wd:2,time:'06:00'},{wd:5,time:'06:00'}],share1:0.5},S.settings||{},(typeof local!=='undefined'&&local['settings/main'])||{});
-try{const h=location.hash.slice(1);if(['flowers','buying','count','insights','more'].includes(h))S.tab=h}catch(e){}
+const settings=()=>Object.assign({days:[{wd:2,time:'06:00'},{wd:5,time:'06:00'}],share1:0.5,prices:{vat:25,round:0.5,markup:2.5,show:'both'}},S.settings||{},(typeof local!=='undefined'&&local['settings/main'])||{});
+try{const h=location.hash.slice(1);if(['flowers','buying','count','insights','prices','more'].includes(h))S.tab=h}catch(e){}
 
 /* ---------- toast ---------- */
 let toastT;function toast(m){const el=document.getElementById('toast');el.textContent=m;el.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>el.hidden=true,3200)}
@@ -260,13 +262,14 @@ const ICON={
  buying:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 3h10l1 4H6l1-4zM5 7h14l-1.2 13H6.2L5 7z"/><path d="M9 11h6M9 15h6"/></svg>',
  count:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M4 9h16M4 15h16M8 6h2M8 12h2M8 18h2"/></svg>',
  insights:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
+ prices:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12V4h8l10 10-8 8L3 12z"/><circle cx="7.5" cy="8.5" r="1.5"/></svg>',
  more:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg>'};
 function reviewCount(){let n=0;for(const id in S.invoices)for(const l of S.invoices[id].lines||[])if(l.status==='review')n++;return n}
 function renderTop(){const m=monday(S.week);const sun=new Date(m);sun.setUTCDate(m.getUTCDate()+6);
  document.getElementById('top').innerHTML=`<div class="brand">Florén<small>${t('sub')}</small></div>
  <div class="weeknav"><button data-act="wk" data-d="-1" aria-label="previous week">‹</button><div class="wk"><b>${t('week')} ${wnum(S.week)}${S.week===TODAY_WK?' •':''}</b><span>${fdate(m,{day:'numeric',month:'short'})} – ${fdate(sun,{day:'numeric',month:'short'})}</span></div><button data-act="wk" data-d="1" aria-label="next week">›</button></div>
  <button class="lang" data-act="lang" aria-label="language">${LANG==='uk'?'EN':'UA'}</button>`}
-function renderDock(){const rc=reviewCount();document.getElementById('dock').innerHTML='<div class="in">'+['flowers','buying','count','insights','more'].map(k=>`<button data-act="tab" data-k="${k}" ${S.tab===k?'aria-current="page"':''}>${ICON[k]}<span>${t(k)}</span>${k==='buying'&&rc?`<i class="dot">${rc}</i>`:''}</button>`).join('')+'</div>'}
+function renderDock(){const rc=reviewCount();document.getElementById('dock').innerHTML='<div class="in">'+['flowers','buying','count','insights','prices','more'].map(k=>`<button data-act="tab" data-k="${k}" ${S.tab===k?'aria-current="page"':''}>${ICON[k]}<span>${t(k)}</span>${k==='buying'&&rc?`<i class="dot">${rc}</i>`:''}</button>`).join('')+'</div>'}
 function connNote(){if(S.auth!=='in')return '';if(S.conn==='wait')return `<p class="conn muted">${t('connecting')}</p>`;if(S.conn==='off')return `<div class="note">${t('offline')}</div>`;if(!S.canWrite)return `<div class="note">${t('readOnly')}</div>`;return ''}
 function render(){
  const ae=document.activeElement;const fid=ae&&ae.id;let ss=null,se=null;try{ss=ae.selectionStart;se=ae.selectionEnd}catch(e){}
@@ -276,7 +279,7 @@ function render(){
  if(gate){v.innerHTML=S.auth==='wait'||S.auth==='checking'?`<p class="conn muted" style="text-align:center;padding-top:30vh">${t('connecting')}</p>`:vLogin();document.getElementById('modal').innerHTML='';
   if(fid){const el=document.getElementById(fid);if(el)el.focus({preventScroll:true})}return}
  renderTop();renderDock();
- v.innerHTML=connNote()+({flowers:vFlowers,buying:vBuying,count:vCount,insights:vInsights,more:vMore}[S.tab])();
+ v.innerHTML=connNote()+({flowers:vFlowers,buying:vBuying,count:vCount,insights:vInsights,prices:vPrices,more:vMore}[S.tab])();
  renderModal();
  if(fid){const el=document.getElementById(fid);if(el&&el!==document.activeElement){el.focus({preventScroll:true});try{if(ss!=null)el.setSelectionRange(ss,se)}catch(e){}}}
 }
@@ -312,10 +315,10 @@ function vFlowers(){
   for(const [id,f] of items){if(f.group!==curG){curG=f.group;buf+=`<div class="grp">${esc(gname(f.group))}</div>`}
    const st=stockOf(id);
    buf+=`<button class="frow" data-act="editFlower" data-id="${id}"><div><div class="n">${esc(f.variety||gname(f.group))} <span class="len">${f.length?f.length+' cm':''}</span></div>
-   <div class="s">${esc(f.supplier||'—')} · ${bunchOf(id)}/${t('bundles')}${f.verified?'':` <span class="badge b-unv">${t('unverified')}</span>`}${f.demo?` <span class="badge b-demo">demo</span>`:''}</div></div>
+   <div class="s">${esc(f.supplier||'—')} · ${bunchOf(id)}/${t('bundles')}${sellOf(id)!=null?` · ${t('sellShort')} <b class="num">${dkk(sellOf(id),2)}</b>`:''}${f.verified?'':` <span class="badge b-unv">${t('unverified')}</span>`}${f.demo?` <span class="badge b-demo">demo</span>`:''}</div></div>
    <div class="stock" title="${esc(t('stockTip'))}"><b>${st?nf(st):'·'}</b><span>${st?t('stems'):''}</span></div></button>`}
   buf+='</section>'}
- return h+buf+`<button class="fab" data-act="addFlower">${t('add')}</button>`}
+ return h+`<div class="flist">${buf}</div>`+`<button class="fab" data-act="addFlower">${t('add')}</button>`}
 
 /* ---------- flower sheet ---------- */
 function openFlower(id,preset){const f=id?Object.assign({},F(id)):Object.assign({tier:S.tier,group:'',variety:'',color:'',length:null,supplier:lastSupplier(),bunch:null,verified:true,sell:null,spot:'',active:true},preset||{});S.modal={type:'flower',id,d:f};S.confirm=null;render()}
@@ -573,6 +576,63 @@ function nextSugg(wk){const nx=addW(wk,1);const items=flowerList().map(([id,f])=
  return h+`<button class="btn ghost" data-act="goBuying" data-wk="${nx}">${t('toBuying')} →</button></div>`}
 
 /* ---------- more ---------- */
+/* ---------- prices ---------- */
+const sellDraft={};const sellT={};
+function sellOf(id){if(id in sellDraft){const v=sellDraft[id];return v===''||v==null||isNaN(Number(v))?null:Number(v)}const s=F(id)?.sell;return s==null||s===''?null:Number(s)}
+function pset(){return Object.assign({vat:25,round:0.5,markup:2.5,show:'both'},settings().prices||{})}
+const withVat=v=>v==null?null:v*(1+pset().vat/100);
+function roundUp(v){const r=Number(pset().round)||0;return r>0?Math.ceil(v/r-1e-9)*r:Math.round(v*100)/100}
+function setSell(id,val){sellDraft[id]=val;clearTimeout(sellT[id]);sellT[id]=setTimeout(async()=>{const v=sellDraft[id];const n=v===''||v==null||isNaN(Number(v))?null:Math.round(Number(v)*100)/100;
+ const ok=await upd('flowers/'+id,{sell:n});if(ok)setTimeout(()=>{if(sellDraft[id]===v){delete sellDraft[id];bump()}},1500)},700);bump()}
+function priceRows(){const q=(S.pq||'').trim().toLowerCase();let list=sortFlowers(flowerList());
+ if(S.ptier)list=list.filter(([,f])=>(f.tier==='luxury'?'luxury':'regular')===S.ptier);
+ if(q)list=list.filter(([,f])=>[f.variety,gname(f.group),f.group,f.supplier,cname(f.color),String(f.length||'')].join(' ').toLowerCase().includes(q));
+ if(S.pNoPrice)list=list.filter(([id])=>sellOf(id)==null);
+ return list.sort((a,b)=>(a[1].tier==='luxury'?0:1)-(b[1].tier==='luxury'?0:1))}
+function vPrices(){const ps=pset();const rows=priceRows();const all=flowerList();const priced=all.filter(([id])=>sellOf(id)!=null).length;
+ let h=`<h2 class="secth" style="margin-top:14px">${t('pricesTitle')}</h2><p class="small muted" style="max-width:65ch">${t('pricesHint')}</p>
+ <div class="card"><div class="pgrid">
+  <div class="field"><label for="ps_vat">${t('vat')}</label><input id="ps_vat" type="number" inputmode="decimal" min="0" step="1" value="${ps.vat}" data-pset="vat"></div>
+  <div class="field"><label for="ps_round">${t('rounding')}</label><select id="ps_round" data-pset="round">${[0,0.25,0.5,1,5].map(r=>`<option value="${r}" ${Number(ps.round)===r?'selected':''}>${r?nf(r,r<1?2:0):'0,01'}</option>`).join('')}</select></div>
+  <div class="field"><label for="ps_markup">${t('markup')}</label><input id="ps_markup" type="number" inputmode="decimal" min="1" step="0.1" value="${ps.markup}" data-pset="markup"></div>
+  <div class="field"><label for="ps_show">${t('plShow')}</label><select id="ps_show" data-pset="show"><option value="both" ${ps.show==='both'?'selected':''}>${t('plBoth')}</option><option value="incl" ${ps.show==='incl'?'selected':''}>${t('plIncl')}</option><option value="excl" ${ps.show==='excl'?'selected':''}>${t('plExcl')}</option></select></div>
+ </div>
+ <div class="row" style="margin-top:10px"><span class="lbl">${t('applyMarkup')} ×${nf(ps.markup,1)}</span><button class="btn" data-act="applyMk" data-k="empty">${t('toEmpty')}</button><button class="btn" data-act="applyMk" data-k="all">${S.confirm==='mkall'?t('tapAgain').replace(/видалити|delete/i,'ok'):t('toAll')}</button></div></div>
+ <div class="card"><h3>${t('priceList')} <span class="muted small">${priced}/${all.length} ${t('withPrice')}</span></h3><div class="row"><button class="btn primary" data-act="plPdf" data-k="customer">${t('plCustomer')}</button><button class="btn" data-act="plPdf" data-k="internal">${t('plInternal')}</button><button class="btn" data-act="csv" data-k="prices">${t('plCsv')}</button></div></div>
+ <div class="seg" role="group">${[['',t('allTiers')],['luxury',t('luxury')],['regular',t('regular')]].map(([k,l])=>`<button ${k==='luxury'?'class="lux"':''} data-act="ptier" data-k="${k}" aria-pressed="${(S.ptier||'')===k}">${l}</button>`).join('')}</div>
+ <div class="row"><input id="pq" type="search" style="flex:1;min-width:200px" placeholder="${esc(t('search'))}" value="${esc(S.pq||'')}" data-bind="pq"><button class="chip" data-act="pNoPrice" aria-pressed="${!!S.pNoPrice}">${t('onlyNoPrice')}</button></div>
+ <div class="tblwrap"><table class="ptable"><thead><tr><th>${t('variety')}</th><th>${t('costStem')}</th><th>${t('sellStem')}</th><th>${t('inclVat')}</th><th>${t('perBunch')}</th><th>${t('markup')}</th><th>${t('margin')}</th></tr></thead><tbody>`;
+ let tier=null,col=null;
+ for(const [id,f] of rows){const tr=f.tier==='luxury'?'luxury':'regular';if(tr!==tier){tier=tr;col=null;h+=`<tr class="grp"><td colspan="7"><span class="badge ${tr==='luxury'?'b-lux':'b-ok'}">${t(tr)}</span></td></tr>`}
+  if(f.color!==col){col=f.color;h+=`<tr class="sub"><td colspan="7">${swatch(f.color)} ${esc(cname(f.color))}</td></tr>`}
+  const cost=lastPrice(id),s=sellOf(id),v=id in sellDraft?sellDraft[id]:(s??'');const mk=cost&&s?s/cost:null,mg=cost&&s?(s-cost)/s:null;
+  h+=`<tr><td><b>${esc(f.variety||gname(f.group))}</b> <span class="muted">${f.length?f.length+' cm':''}</span><div class="small muted">${esc(gname(f.group))} · ${bunchOf(id)}/${t('bundles')}</div></td>
+  <td class="num">${cost!=null?dkk(cost,2):`<span class="small muted" title="${esc(t('noCostHint'))}">—</span>`}</td>
+  <td><input id="sell_${id}" class="sellin" type="number" inputmode="decimal" min="0" step="0.5" value="${esc(v)}" data-sell="${id}" aria-label="${esc(t('sellStem')+' '+(f.variety||''))}" placeholder="${cost!=null?nf(roundUp(cost*ps.markup),2):''}"></td>
+  <td class="num">${s!=null?dkk(withVat(s),2):'—'}</td><td class="num">${s!=null?dkk(withVat(s)*bunchOf(id),0):'—'}</td>
+  <td class="num">${mk?'×'+nf(mk,1):'—'}</td><td class="num" style="color:${mg!=null&&mg<.4?'var(--warn)':'inherit'}">${mg!=null?pct(mg):'—'}</td></tr>`}
+ if(!rows.length)h+=`<tr><td colspan="7" class="muted" style="text-align:center">${t('noMatch')}</td></tr>`;
+ return h+'</tbody></table></div>'}
+async function applyMarkup(mode){const ps=pset();let n=0;const ops=[];
+ for(const [id] of priceRows()){const cost=lastPrice(id);if(cost==null)continue;if(mode==='empty'&&sellOf(id)!=null)continue;const v=roundUp(cost*ps.markup);sellDraft[id]=v;n++;ops.push(upd('flowers/'+id,{sell:v}))}
+ bump();await Promise.all(ops);setTimeout(()=>{for(const k in sellDraft)delete sellDraft[k];bump()},1500);toast(t('applied',{n}))}
+async function pdfPriceList(kind){try{const ps=pset();const rows=sortFlowers(flowerList()).filter(([id])=>sellOf(id)!=null).sort((a,b)=>(a[1].tier==='luxury'?0:1)-(b[1].tier==='luxury'?0:1));
+ if(!rows.length){toast(t('plNone'));return}
+ const internal=kind==='internal';const today=new Date();const ds=new Intl.DateTimeFormat(loc(),{day:'numeric',month:'long',year:'numeric'}).format(today);
+ const d=await pdfDoc(`Florén · ${t('plTitle')}`,t('plValid',{d:ds})+(ps.show!=='excl'?` · ${t('vat')} ${ps.vat}`:''));
+ const cols=[t('variety'),'cm',t('color')];if(internal)cols.push(t('costStem'));
+ if(ps.show!=='incl')cols.push(t('sellStem'));if(ps.show!=='excl')cols.push(t('sellStem').split(' ')[0]+' '+t('inclVat'));
+ cols.push(t('perBunch')+(ps.show==='excl'?'':' '+t('inclVat')));if(internal)cols.push(t('markup'),t('margin'));
+ const body=[];let tier=null,g=null;
+ for(const [id,f] of rows){const tr=f.tier==='luxury'?'luxury':'regular';if(tr!==tier){tier=tr;g=null;body.push(grpRow(t(tr),cols.length,[30,90,66].map(x=>x+150)))}
+  if(f.group!==g){g=f.group;body.push(grpRow(gname(f.group),cols.length))}
+  const s=sellOf(id),c=lastPrice(id),b=bunchOf(id);const r=[f.variety||gname(f.group),f.length||'',cname(f.color)];if(internal)r.push(c!=null?nf(c,2):'-');
+  if(ps.show!=='incl')r.push(nf(s,2));if(ps.show!=='excl')r.push(nf(withVat(s),2));
+  r.push(`${nf(ps.show==='excl'?s*b:withVat(s)*b,0)} (${b} ${t('stems')})`);if(internal)r.push(c?'×'+nf(s/c,1):'-',c?pct((s-c)/s):'-');body.push(r.map(P))}
+ const right={};for(let i=3;i<cols.length;i++)right[i]={halign:'right'};
+ d.autoTable(Object.assign({},TS,{startY:28,head:[cols.map(P)],body,columnStyles:right}));
+ d.setFontSize(8);d.setTextColor(90);d.text(P('DKK · Florén Studio ApS'),14,d.lastAutoTable.finalY+6);
+ await savePdf(d,`Floren_${internal?'intern_':''}prisliste_${today.toISOString().slice(0,10)}.pdf`)}catch(e){toast(e.message)}}
 function vMore(){const st=settings();const hasDemo=Object.values(S.invoices).some(i=>i.demo)||Object.values(S.cm).some(c=>c.demo);
  let h=`<div class="card"><h3>${t('buyDays')}</h3><div class="stack">${[0,1].map(i=>`<div class="row"><span class="lbl" style="width:50px">${t('day')} ${i+1}</span><select id="sd_${i}" data-sday="${i}" style="flex:1">${t('days').map((d,j)=>`<option value="${j+1}" ${st.days[i]?.wd===j+1?'selected':''}>${d}</option>`).join('')}</select><input id="st_${i}" type="time" data-stime="${i}" value="${esc(st.days[i]?.time||'06:00')}" style="width:140px"></div>`).join('')}
  <div class="field"><label for="s_share">${t('share')}: <b>${Math.round(st.share1*100)} %</b></label><input id="s_share" type="range" min="0" max="100" step="5" value="${Math.round(st.share1*100)}" data-sshare="1"></div></div></div>
@@ -638,6 +698,8 @@ async function csv(kind){let rows=[],name='';const fl=S.flowers;
  if(kind==='purch'){name='koeb';rows=[['week','day','flower_id','tier','group','variety','colour','length_cm','supplier','stems','packs','price_per_stem_dkk','total_dkk','invoice','demo']];for(const p of Object.values(S.purch))rows.push([p.wk,p.day,...fcols(p.fid),p.stems,p.bunches,cnum(p.ppStem),cnum(p.total),p.inv||'',p.demo?'yes':''])}
  if(kind==='lines'){name='fakturalinjer';rows=[['invoice_id','supplier','invoice_no','invoice_date','week','day','line','status','kind','text','flower_id','variety','stems','price_per_stem_dkk','total_dkk','original_file']];for(const [id,i] of Object.entries(S.invoices))(i.lines||[]).forEach((l,n)=>rows.push([id,i.supplier,i.no,i.date,i.wk,i.day,n,l.status,l.kind,l.text,l.fid||'',l.fid&&fl[l.fid]?fl[l.fid].variety:'',l.stems,cnum(l.ppStem),cnum(l.total),i.fileName||'']))}
  if(kind==='counts'){name='optaellinger';rows=[['week','saved','flower_id','tier','group','variety','colour','length_cm','supplier','bunches','loose','stems','condition','reason']];for(const c of Object.values(allCL()))(c.entries||[]).forEach(e=>rows.push([c.wk,S.cm[c.wk]?.saved?'yes':'no',...fcols(c.fid),e.b||0,e.l||0,eStems(e,c.fid),t(e.c),e.c==='bad'?(e.r==='other'&&e.rt?e.rt:t(e.r||'other')):'']))}
+ if(kind==='prices'){name='prisliste';const ps=pset();rows=[['flower_id','tier','group','variety','colour','length_cm','supplier','stems_per_bunch','cost_per_stem_dkk','sell_per_stem_excl_vat_dkk','sell_per_stem_incl_vat_dkk','bunch_incl_vat_dkk','markup','margin_pct']];
+  for(const [id] of sortFlowers(flowerList())){const s=sellOf(id),c=lastPrice(id),b=bunchOf(id);rows.push([...fcols(id),b,cnum(c),cnum(s),cnum(withVat(s)),s!=null?cnum(withVat(s)*b):'',c&&s?cnum(s/c):'',c&&s?cnum((s-c)/s*100):''])}}
  if(kind==='stats'){name='ugetal';rows=[['week','flower_id','tier','group','variety','colour','length_cm','supplier','opening','bought','used','left','not_usable','waste_pct','cost_dkk','cost_per_stem_dkk','income_dkk']];
   const weeks=[...new Set([...Object.values(S.purch).map(p=>p.wk),...Object.keys(S.cm)])].sort();for(const w of weeks){const wd=weekData(w);for(const [fid,r] of Object.entries(wd.rows))if(fl[fid])rows.push([w,...fcols(fid),r.open,r.bought,r.used??'',wd.counted?r.left:'',wd.counted?r.bad:'',r.wastePct!=null?cnum(r.wastePct*100):'',cnum(r.cost),cnum(r.cps),cnum(r.income)])}}
  const text='﻿'+rows.map(r=>r.map(cq).join(';')).join('\r\n');
@@ -653,6 +715,8 @@ function renderModal(){const el=document.getElementById('modal');if(!S.modal){el
 /* ---------- events ---------- */
 const A={
  openOrig:e=>openOriginal(e.dataset.id),
+ ptier:e=>{S.ptier=e.dataset.k;render()},pNoPrice:()=>{S.pNoPrice=!S.pNoPrice;render()},plPdf:e=>pdfPriceList(e.dataset.k),
+ applyMk:e=>{if(e.dataset.k==='all'&&S.confirm!=='mkall'){S.confirm='mkall';render();return}S.confirm=null;applyMarkup(e.dataset.k)},
  loginMode:()=>{S.loginMode=S.loginMode==='up'?'in':'up';S.loginMsg='';render()},
  signOut:async()=>{await sb.auth.signOut();S.flowers={};S.purch={};S.cl={};S.cm={};S.orders={};S.invoices={};S.team=[];render()},
  rmMember:async e=>{const em=e.dataset.e;if(S.confirm!=='tm_'+em){S.confirm='tm_'+em;render();return}S.confirm=null;const {error}=await sb.from('team').delete().eq('email',em);if(error)toast(errMsg(error));loadTeam()},
@@ -700,12 +764,15 @@ document.addEventListener('input',ev=>{const el=ev.target;const ds=el.dataset;
  if(ds.lbind&&S.modal){if(ds.lbind==='q'){S.modal.q=el.value;render()}else S.modal.d[ds.lbind]=el.value;return}
  if(ds.cnt){const v=Math.max(0,parseInt(el.value,10)||0);editEntries(ds.cnt,en=>{en[Number(ds.i)][ds.f]=v});return}
  if(ds.rt){const v=el.value;editEntries(ds.rt,en=>{en[Number(ds.i)].rt=v});return}
+ if(ds.sell){setSell(ds.sell,el.value);return}
+ if(ds.pset&&el.tagName!=='SELECT'){const v=Number(el.value);if(!isNaN(v)&&el.value!==''){saveSettings({prices:Object.assign(pset(),{[ds.pset]:v})})}return}
  if(ds.sshare){saveSettings({share1:Number(el.value)/100});return}
 });
 document.addEventListener('change',ev=>{const el=ev.target;const ds=el.dataset;
  if(ds.attach){const f=el.files&&el.files[0];el.value='';attachOriginal(ds.attach,f);return}
  if(ds.actChange==='invFile'){const f=el.files&&el.files[0];el.value='';handleInvoiceFile(f);return}
  if(ds.invbind&&S.modal?.id){setInvField(S.modal.id,ds.invbind,el.value);return}
+ if(ds.pset&&el.tagName==='SELECT'){saveSettings({prices:Object.assign(pset(),{[ds.pset]:ds.pset==='show'?el.value:Number(el.value)})});return}
  if(ds.sday!=null){const st=settings();const days=st.days.map(x=>Object.assign({},x));days[Number(ds.sday)].wd=Number(el.value);saveSettings({days});return}
  if(ds.stime!=null){const st=settings();const days=st.days.map(x=>Object.assign({},x));days[Number(ds.stime)].time=el.value;saveSettings({days});return}
 });

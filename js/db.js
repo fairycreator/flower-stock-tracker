@@ -5,7 +5,7 @@
   const T = {
     flowers:    { table: 'stock_flowers', keys: ['tier','group','variety','color','length','supplier','bunch','verified','sell','spot','active','src','grade','alias','demo','created'],
                   cols: { group: 'grp', created: 'created_ms' }, num: ['sell','created'] },
-    settings:   { table: 'stock_settings', keys: ['days','share1'], cols: {}, num: ['share1'] },
+    settings:   { table: 'stock_settings', keys: ['days','share1','prices'], cols: {}, num: ['share1'] },
     invoices:   { table: 'stock_invoices', keys: ['supplier','supplierFull','no','date','due','wk','day','asset','fileName','currency','lines','flowersTotal','feesTotal','total','manual','demo','created'],
                   cols: { supplierFull: 'supplier_full', no: 'invoice_no', date: 'invoice_date', due: 'due_date', fileName: 'file_name', flowersTotal: 'flowers_total', feesTotal: 'fees_total', created: 'created_ms' },
                   num: ['flowersTotal','feesTotal','total','created'] },
