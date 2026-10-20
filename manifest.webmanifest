@@ -1,0 +1,9 @@
+{
+  "name": "Florén – склад квітів",
+  "short_name": "Florén склад",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#EEF2EC",
+  "theme_color": "#1E5A42",
+  "icons": [{ "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}
