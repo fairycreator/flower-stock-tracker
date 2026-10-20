@@ -29,6 +29,12 @@ const REASONS=['wilted','broken','botrytis','overblown','arrival','cold','other'
 
 /* ---------- i18n ---------- */
 const T={uk:{
+ home:'Головна',stock:'Склад',reports:'Звіти',invoicesTab:'Рахунки',dropHere:'Перетягніть PDF рахунку сюди',dropOr:'або натисніть, щоб вибрати файл – PDF чи фото',dropActive:'Відпустіть, щоб завантажити рахунок',
+ nextBuy:'Наступна закупівля',openList:'Відкрити список',positions:'позицій',countCard:'Підрахунок у кінці тижня',countStart:'Почати підрахунок',countContinue:'Продовжити підрахунок',countDoneCard:'Збережено – залишки перейшли в тиждень {w}',countNone:'Ще не почато',countDraft:'{n} квітів пораховано',
+ needsAttention:'Потребує уваги',linesToReview:'Рядки рахунків на перевірку: {n}',flowersUnv:'Неперевірені квіти: {n}',flowersNoPrice:'Куплені квіти без ціни продажу: {n}',allGood:'Усе в порядку.',thisWeek:'Цей тиждень',lastWeekWaste:'Списання, тиждень {w}',
+ importTitle:'Рахунок прочитано',importSum:'{m} рядків зіставлено з вашими квітами · {n} нових',importNewHint:'Нові квіти буде створено з даних рахунку. Перевірте колір – решту заповнено автоматично, все можна змінити пізніше.',
+ absorbN:'Внести на склад ({n})',newCount:'Нові',asNew:'Нова квітка',skip:'Пропустити',sameAs:'Це: {x}',later:'Пізніше',absorbed:'Внесено на склад: {n} рядків',allMatched:'Усі рядки зіставлено й внесено на склад.',matchedLines:'Зіставлено',feesLines:'Тара та збори (не входять у вартість квітів)',
+ openInvoice:'Відкрити рахунок',recentInv:'Останні рахунки',listView:'Список',pricesView:'Ціни продажу',settingsT:'Налаштування',done:'Готово',readingPdf:'Читаю PDF…',noLines:'У файлі не знайдено рядків з квітами.',
  sub:'Склад квітів',week:'Тиждень',flowers:'Квіти',buying:'Закупівля',count:'Підрахунок',insights:'Огляд',more:'Ще',
  luxury:'Люкс',regular:'Звичайні',search:'Пошук: сорт, група, постачальник…',allGroups:'Усі групи',allColors:'Усі кольори',allLengths:'Уся довжина',
  unverified:'Не перевірено',verified:'Перевірено',inStock:'на складі',stems:'шт',add:'+ Додати квітку',addFlower:'Додати квітку',editFlower:'Редагувати квітку',
@@ -78,6 +84,12 @@ const T={uk:{
 },
 en:{
  sub:'Flower stock',
+ home:'Home',stock:'Stock',reports:'Reports',invoicesTab:'Invoices',dropHere:'Drop a supplier invoice PDF here',dropOr:'or tap to choose a file – PDF or photo',dropActive:'Release to upload the invoice',
+ nextBuy:'Next buying day',openList:'Open list',positions:'items',countCard:'End-of-week count',countStart:'Start count',countContinue:'Continue count',countDoneCard:'Saved – leftovers moved into week {w}',countNone:'Not started',countDraft:'{n} flowers counted',
+ needsAttention:'Needs attention',linesToReview:'{n} invoice lines waiting for review',flowersUnv:'{n} flowers not verified',flowersNoPrice:'{n} bought flowers without a selling price',allGood:'All good.',thisWeek:'This week',lastWeekWaste:'Waste, week {w}',
+ importTitle:'Invoice read',importSum:'{m} lines matched to your flowers · {n} new',importNewHint:'New flowers are created from the invoice. Check the colour – the rest is filled in automatically and can be changed later.',
+ absorbN:'Add to stock ({n})',newCount:'New',asNew:'New flower',skip:'Skip',sameAs:'Same as: {x}',later:'Later',absorbed:'Added to stock: {n} lines',allMatched:'All lines matched and added to stock.',matchedLines:'Matched',feesLines:'Packaging and fees (not in flower cost)',
+ openInvoice:'Open invoice',recentInv:'Recent invoices',listView:'List',pricesView:'Selling prices',settingsT:'Settings',done:'Done',readingPdf:'Reading PDF…',noLines:'No flower lines found in the file.',
  attach:'Attach original',dupFile:'This invoice is already uploaded.',dupNo:'Invoice {no} already exists.',pdfPriceNote:'latest invoice price; "-" = no price yet',coolerNote:'Write counts and tick. Every discard needs a reason.',reasonCol:'Reason',
  signIn:'Sign in',signUp:'Create account',email:'Email',password:'Password',signOut:'Sign out',signInTitle:'Florén flower stock',signInHint:'Sign in with your team account.',
  haveAcc:'Already have an account? Sign in',noAcc:'No account? Create one',checkEmail:'Check your email and confirm the address, then sign in.',
@@ -147,12 +159,12 @@ const today=new Date();const TODAY_WK=isoKey(new Date(Date.UTC(today.getFullYear
 const MIN_WK=addW(TODAY_WK,-16);
 
 /* ---------- state ---------- */
-const S={tab:'flowers',tier:'luxury',week:TODAY_WK,q:'',fg:'',fc:'',fl:'',onlyUnv:false,bday:1,showAll:false,why:{},cntFilter:'stock',
+const S={tab:'home',ftab:'list',tier:'luxury',week:TODAY_WK,q:'',fg:'',fc:'',fl:'',onlyUnv:false,bday:1,showAll:false,why:{},cntFilter:'stock',
  flowers:{},settings:null,purch:{},cl:{},cm:{},orders:{},invoices:{},conn:'wait',canWrite:true,auth:'wait',user:null,team:[],loginMode:'in',modal:null,confirm:null,upload:null,ver:0};
 let db=null,sampler=null,assets=null,dls=null,sb=null;
 const local={};const pend={};const inflight={};
 const settings=()=>Object.assign({days:[{wd:2,time:'06:00'},{wd:5,time:'06:00'}],share1:0.5,prices:{vat:25,round:0.5,markup:2.5,show:'both'}},S.settings||{},(typeof local!=='undefined'&&local['settings/main'])||{});
-try{const h=location.hash.slice(1);if(['flowers','buying','count','insights','prices','more'].includes(h))S.tab=h}catch(e){}
+try{const h=location.hash.slice(1);if(['home','flowers','invoices','buying','count','insights','more'].includes(h))S.tab=h;if(h==='prices'){S.tab='flowers';S.ftab='prices'}}catch(e){}
 
 /* ---------- toast ---------- */
 let toastT;function toast(m){const el=document.getElementById('toast');el.textContent=m;el.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>el.hidden=true,3200)}
@@ -262,14 +274,16 @@ const ICON={
  buying:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 3h10l1 4H6l1-4zM5 7h14l-1.2 13H6.2L5 7z"/><path d="M9 11h6M9 15h6"/></svg>',
  count:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M4 9h16M4 15h16M8 6h2M8 12h2M8 18h2"/></svg>',
  insights:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
+ home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>',
+ invoices:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h7M9 16h7M12 8v-.01"/></svg>',
  prices:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12V4h8l10 10-8 8L3 12z"/><circle cx="7.5" cy="8.5" r="1.5"/></svg>',
  more:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg>'};
 function reviewCount(){let n=0;for(const id in S.invoices)for(const l of S.invoices[id].lines||[])if(l.status==='review')n++;return n}
 function renderTop(){const m=monday(S.week);const sun=new Date(m);sun.setUTCDate(m.getUTCDate()+6);
  document.getElementById('top').innerHTML=`<div class="brand">Florén<small>${t('sub')}</small></div>
- <div class="weeknav"><button data-act="wk" data-d="-1" aria-label="previous week">‹</button><div class="wk"><b>${t('week')} ${wnum(S.week)}${S.week===TODAY_WK?' •':''}</b><span>${fdate(m,{day:'numeric',month:'short'})} – ${fdate(sun,{day:'numeric',month:'short'})}</span></div><button data-act="wk" data-d="1" aria-label="next week">›</button></div>
- <button class="lang" data-act="lang" aria-label="language">${LANG==='uk'?'EN':'UA'}</button>`}
-function renderDock(){const rc=reviewCount();document.getElementById('dock').innerHTML='<div class="in">'+['flowers','buying','count','insights','prices','more'].map(k=>`<button data-act="tab" data-k="${k}" ${S.tab===k?'aria-current="page"':''}>${ICON[k]}<span>${t(k)}</span>${k==='buying'&&rc?`<i class="dot">${rc}</i>`:''}</button>`).join('')+'</div>'}
+ <div class="weeknav"><button data-act="wk" data-d="-1" aria-label="previous week">‹</button><div class="wk"><b class="${S.week===TODAY_WK?'now':''}">${t('week')} ${wnum(S.week)}</b><span>${fdate(m,{day:'numeric',month:'short'})} – ${fdate(sun,{day:'numeric',month:'short'})}</span></div><button data-act="wk" data-d="1" aria-label="next week">›</button></div>
+ <button class="lang" data-act="lang" aria-label="language">${LANG==='uk'?'EN':'UA'}</button><button class="iconbtn ${S.tab==='more'?'on':''}" data-act="tab" data-k="more" aria-label="${esc(t('settingsT'))}" title="${esc(t('settingsT'))}">${ICON.more}</button>`}
+function renderDock(){const rc=reviewCount();document.getElementById('dock').innerHTML='<div class="in">'+[['home','home'],['flowers','stock'],['invoices','invoicesTab'],['buying','buying'],['count','count'],['insights','reports']].map(([k,l])=>`<button data-act="tab" data-k="${k}" ${S.tab===k?'aria-current="page"':''}>${ICON[k]}<span>${t(l)}</span>${k==='invoices'&&rc?`<i class="dot">${rc}</i>`:''}</button>`).join('')+'</div>'}
 function connNote(){if(S.auth!=='in')return '';if(S.conn==='wait')return `<p class="conn muted">${t('connecting')}</p>`;if(S.conn==='off')return `<div class="note">${t('offline')}</div>`;if(!S.canWrite)return `<div class="note">${t('readOnly')}</div>`;return ''}
 function render(){
  const ae=document.activeElement;const fid=ae&&ae.id;let ss=null,se=null;try{ss=ae.selectionStart;se=ae.selectionEnd}catch(e){}
@@ -278,8 +292,8 @@ function render(){
  const gate=S.auth!=='in';document.getElementById('top').hidden=gate;document.getElementById('dock').hidden=gate;
  if(gate){v.innerHTML=S.auth==='wait'||S.auth==='checking'?`<p class="conn muted" style="text-align:center;padding-top:30vh">${t('connecting')}</p>`:vLogin();document.getElementById('modal').innerHTML='';
   if(fid){const el=document.getElementById(fid);if(el)el.focus({preventScroll:true})}return}
- renderTop();renderDock();
- v.innerHTML=connNote()+({flowers:vFlowers,buying:vBuying,count:vCount,insights:vInsights,prices:vPrices,more:vMore}[S.tab])();
+ renderTop();renderDock();const dov=document.getElementById('dropov');if(dov)dov.textContent=t('dropActive');
+ v.innerHTML=connNote()+({flowers:vFlowers,buying:vBuying,count:vCount,insights:vInsights,prices:vPrices,more:vMore,home:vHome,invoices:vInvoicesTab}[S.tab])();
  renderModal();
  if(fid){const el=document.getElementById(fid);if(el&&el!==document.activeElement){el.focus({preventScroll:true});try{if(ss!=null)el.setSelectionRange(ss,se)}catch(e){}}}
 }
@@ -289,6 +303,10 @@ function flowerList(){return Object.entries(S.flowers).filter(([,f])=>f.active!=
 function stockOf(fid){const r=weekData(S.week).rows[fid];return r?r.open+r.bought:0}
 function sortFlowers(arr){return arr.sort((a,b)=>{const A=a[1],B=b[1];return (CMAP[A.color]?.i??99)-(CMAP[B.color]?.i??99)||gname(A.group).localeCompare(gname(B.group),loc())||(A.variety||'').localeCompare(B.variety||'',loc())||(A.length||0)-(B.length||0)})}
 function vFlowers(){
+ const segFP=`<div class="seg seg-sm" role="group"><button data-act="ftab" data-k="list" aria-pressed="${S.ftab!=='prices'}">${t('listView')}</button><button data-act="ftab" data-k="prices" aria-pressed="${S.ftab==='prices'}">${t('pricesView')}</button></div>`;
+ if(S.ftab==='prices')return segFP+vPrices();
+ return segFP+vFlowersList()}
+function vFlowersList(){
  const all=flowerList();const cnt={luxury:0,regular:0};all.forEach(([,f])=>cnt[f.tier==='luxury'?'luxury':'regular']++);
  const unv=all.filter(([,f])=>!f.verified).length;
  const q=S.q.trim().toLowerCase();
@@ -370,8 +388,8 @@ function confBanner(wk){const h=hist(wk);const n=h.dataWeeks;let s='';
  if(n<52&&n>=1)s+=`<p class="small muted">${t('seasonNote',{n})}</p>`;return s}
 function reasonText(r){const s=r.s;if(s.none)return t('rsNone');return t('rs',{typ:nf(s.typ),n:s.n,s:LANG==='uk'?'':(s.n===1?'':'s'),left:nf(s.left),net:nf(s.net),b:s.b,bunch:s.bunch,stems:nf(s.stems),d1:s.d1,d2:s.d2,src:s.src==='hist'?t('rsHist'):t('rsSet')})+(s.sellLeft?` · ${nf(s.sellLeft)} ${t('stems')} ${t('sell').toLowerCase()}`:'')}
 function vBuying(){const d1=dayLabel(1),d2=dayLabel(2);const rc=reviewCount();
- let h=`<div class="seg" role="group"><button data-act="bday" data-k="1" aria-pressed="${S.bday===1}">${esc(d1.top)}<small>${esc(d1.time)}</small></button><button data-act="bday" data-k="2" aria-pressed="${S.bday===2}">${esc(d2.top)}<small>${esc(d2.time)}</small></button><button data-act="bday" data-k="3" aria-pressed="${S.bday===3}">${t('invoices')}<small>${rc?rc+' '+t('toReview'):'✓'}</small></button></div>`;
- if(S.bday===3)return h+vInvoices();
+ let h=`<div class="seg" role="group"><button data-act="bday" data-k="1" aria-pressed="${S.bday===1}">${esc(d1.top)}<small>${esc(d1.time)}</small></button><button data-act="bday" data-k="2" aria-pressed="${S.bday===2}">${esc(d2.top)}<small>${esc(d2.time)}</small></button></div>`;
+ if(S.bday===3)S.bday=1;
  const day=S.bday;h+=confBanner(S.week);
  const rows=sheetRows(S.week,day);
  h+=`<div class="row" style="justify-content:space-between"><button class="btn ghost" data-act="showAll">${S.showAll?t('showSuggested'):t('showAll')}</button></div>`;
@@ -391,9 +409,70 @@ function setOrder(id,delta){const key=`${S.week}_d${S.bday}`;const cur=Object.as
 function resetOrder(id){const key=`${S.week}_d${S.bday}`;const cur=Object.assign({},getOrder(key)?.items||{});delete cur[id];queueSet('orders/'+key,{wk:S.week,day:S.bday,items:cur,at:Date.now()},50)}
 
 /* ---------- invoices ---------- */
+/* ---------- home ---------- */
+function nextBuy(){const st=settings();const now=new Date();
+ for(const wk of [TODAY_WK,addW(TODAY_WK,1)])for(const day of [1,2]){const d=st.days[day-1];if(!d)continue;const dt=dayDate(wk,d.wd);const [hh,mm]=(d.time||'06:00').split(':').map(Number);
+  const local=new Date(dt.getUTCFullYear(),dt.getUTCMonth(),dt.getUTCDate(),hh||0,mm||0);if(local.getTime()+2*3600e3>=now.getTime())return {wk,day,dt,time:d.time,wd:d.wd}}
+ return {wk:addW(TODAY_WK,1),day:1,dt:dayDate(addW(TODAY_WK,1),st.days[0].wd),time:st.days[0].time,wd:st.days[0].wd}}
+function dropZone(id){return `<label class="drop ${S.upload?'busy':''}" for="${id}">${ICON.invoices}<b>${t('dropHere')}</b><span>${t('dropOr')}</span><input id="${id}" type="file" accept="application/pdf,image/*" data-act-change="invFile"></label>
+ ${S.upload?`<div class="card upl"><b>${esc(S.upload.name)}</b><p class="small muted">${S.upload.stage==='upload'?t('uploading'):t('reading')}</p><div class="progress"><i></i></div></div>`:''}`}
+function vHome(){const nb=nextBuy();const rows=sheetRows(nb.wk,nb.day).filter(r=>r.order>0);const cost=rows.reduce((a,r)=>a+(r.cost||0),0);
+ const wd=weekData(TODAY_WK);const tot=agg(weekRowsList(TODAY_WK),()=>'a').a;const prev=addW(TODAY_WK,-1);const pw=weekData(prev);const ptot=pw.counted?agg(weekRowsList(prev),()=>'a').a:null;
+ const meta=S.cm[TODAY_WK];const counted=Object.values(allCL()).filter(c=>c.wk===TODAY_WK).length;
+ const rc=reviewCount();const unv=flowerList().filter(([,f])=>!f.verified).length;const boughtIds=new Set(Object.values(S.purch).map(p=>p.fid));const noPrice=flowerList().filter(([id])=>boughtIds.has(id)&&sellOf(id)==null).length;
+ const dname=t('days')[nb.wd-1];
+ let h=`<div class="hello"><h1>${t('week')} ${wnum(TODAY_WK)}</h1><p class="muted">${fdate(new Date(Date.UTC(today.getFullYear(),today.getMonth(),today.getDate())),{weekday:'long',day:'numeric',month:'long'})}</p></div>
+ <div class="homegrid"><div class="hcol">${dropZone('homefile')}</div>
+ <div class="hcol">
+  <button class="tile" data-act="goBuy" data-wk="${nb.wk}" data-day="${nb.day}"><span class="lbl">${t('nextBuy')}</span><b>${esc(dname)} ${fdate(nb.dt,{day:'numeric',month:'short'})} · ${esc(nb.time)}</b><span class="muted">${rows.length} ${t('positions')} · ≈ ${dkk(cost)}</span><span class="go">${t('openList')} →</span></button>
+  <button class="tile" data-act="goCount"><span class="lbl">${t('countCard')}</span><b>${meta?.saved?'✓ '+t('countDoneCard',{w:wnum(addW(TODAY_WK,1))}):counted?t('countDraft',{n:counted}):t('countNone')}</b><span class="go">${counted?t('countContinue'):t('countStart')} →</span></button>
+ </div></div>
+ <div class="kpis kpis4"><div class="kpi"><span>${t('thisWeek')} · ${t('bought')}</span><b>${nf(tot?.bought||0)}</b><small>${t('stems')} · ${dkk(tot?.cost||0)}</small></div>
+ <div class="kpi"><span>${t('cps')}</span><b>${dkk(tot?.cps,2)}</b><small>${t('thisWeek').toLowerCase()}</small></div>
+ <div class="kpi"><span>${t('lastWeekWaste',{w:wnum(prev)})}</span><b>${ptot?pct(ptot.wastePct):'—'}</b><small>${ptot?nf(ptot.bad)+' '+t('stems'):t('notCounted').split('.')[0]}</small></div>
+ <div class="kpi"><span>${t('invoicesTab')}</span><b>${Object.values(S.invoices).filter(i=>i.wk===TODAY_WK).length}</b><small>${t('thisWeek').toLowerCase()}</small></div></div>
+ <h3 class="secth">${t('needsAttention')}</h3><div class="alerts">`;
+ const al=[];if(rc)al.push(['invoices',t('linesToReview',{n:rc}),'bad']);if(noPrice)al.push(['prices',t('flowersNoPrice',{n:noPrice}),'warn']);if(unv)al.push(['unv',t('flowersUnv',{n:unv}),'warn']);
+ h+=al.length?al.map(([k,txt,c])=>`<button class="alert ${c}" data-act="alert" data-k="${k}"><span>${esc(txt)}</span><span>→</span></button>`).join(''):`<p class="muted">${t('allGood')}</p>`;
+ return h+'</div>'}
+function vInvoicesTab(){return `<h2 class="secth" style="margin-top:14px">${t('invoicesTab')}</h2>`+dropZone('invfile')+vInvoices()}
+/* ---------- import (absorb) ---------- */
+const GKEY=[['garden_rose',/\b(gar(den)?|ec gar|david austin)\b/i],['spray_rose',/\b(spray|tros)\b/i],['rose',/^(rosa|ros)\b/i],['tulip',/^tulip/i],['hydrangea',/^hydr/i],['peony',/^(paeon|peon)/i],['ranunculus',/^ranun/i],['lisianthus',/^(eust|lisian)/i],['chrysanthemum',/^chrys/i],['dahlia',/^dahl/i],['lily',/^lil/i],['calla',/^(zant|calla)/i],['alstroemeria',/^alstr/i],['amaryllis',/^(amar|hippe)/i],['anemone',/^anem/i],['anthurium',/^anth/i],['gerbera',/^(gerb|germini)/i],['delphinium',/^delph/i],['gypsophila',/^gyps/i],['eucalyptus',/^euca/i],['ruscus',/^rusc/i],['pistacia',/^pist/i],['sunflower',/^helian/i],['carnation',/^dian/i],['stock',/^matth/i],['snapdragon',/^antirr/i],['freesia',/^frees/i],['scabiosa',/^scab/i],['protea',/^prot/i],['orchid',/^(phal|cymb|orch|vanda)/i],['allium',/^allium/i],['bupleurum',/^bupl/i],['carthamus',/^carth/i],['hypericum',/^hyper/i],['moluccella',/^moluc/i],['ornithogalum',/^ornit/i],['solidago',/^soli/i],['veronica',/^veron/i],['panicum',/^panic/i],['cucurbita',/^cuc/i],['limonium',/^limon/i],['matricaria',/^matric/i]];
+const CKEY=[['white',/\b(white|wh|hvid|wit|blanc\w*|avalanche|snow)\b/i],['cream',/\b(cream|creme|ivory|vanil\w*)\b/i],['peach',/\b(peach|apricot|salmon|fersken|coral)\b/i],['lightpink',/\b(light ?pink|lyser\w*|blush|pastel)\b/i],['pink',/\b(pink|rose|roze|rosa|fuchsia)\b/i],['red',/\b(red|rød|rood|rouge)\b/i],['burgundy',/\b(burgundy|bordeaux|wine|dark red)\b/i],['orange',/\b(orange|oranje|mandarin|bronze)\b/i],['yellow',/\b(yellow|gul|geel|gold\w*)\b/i],['lavender',/\b(lavender|lilac|lila|blues)\b/i],['purple',/\b(purple|lilla|paars|violet)\b/i],['blue',/\b(blue|blå|blauw)\b/i],['green',/\b(green|grøn|groen)\b/i],['mixed',/\b(mix|blandet|gemengd|assorted)\b/i]];
+function guessFlower(l,sup){const name=(l.name||l.text||'').replace(/[!*]+/g,'').trim();let group='other';for(const [g,re] of GKEY)if(re.test(name)){group=g;break}
+ let color='mixed',cg=false;for(const [c,re] of CKEY)if(re.test(name)){color=c;cg=true;break}
+ const variety=name.replace(/^(Rosa|Ros|Tulipa|Hydr\.?|Lilium|Chrys|Dahlia|Eust|Alstr|Amar|Anthu|Delph|Gyps|Euca|Helian|Hyper|Soli|Veron|Ornit|Zanted|Germini|Carth|Cuc|Panicum)\s+((Ec|Gr|Du|En|Or|La|Fl|G|San|A|P|T|An|Pa|Cr|Hg|Gar)\s+)*/i,'').replace(/\s+/g,' ').trim()||name;
+ const pp=l.ppStem??(l.total&&l.stems?l.total/l.stems:null);
+ return {mode:'new',group,variety,color,colorGuessed:cg,tier:pp!=null&&pp>=12?'luxury':'regular',length:l.length??null,bunch:l.spu||GMAP[group]?.bunch||10,supplier:sup||''}}
+function importDrafts(inv){const d={};(inv.lines||[]).forEach((l,i)=>{if(l.status!=='review')return;const g=guessFlower(l,inv.supplier);if(l.suggest&&F(l.suggest)&&(l.conf||0)>=.7)g.mode=l.suggest;d[i]=g});return d}
+function openImport(id,inv){if(inv&&!S.invoices[id])S.invoices[id]=inv;S.modal={type:'import',id,d:S.invoices[id]?importDrafts(S.invoices[id]):null};render()}
+function mImport(){const id=S.modal.id,inv=S.invoices[id];if(!inv)return `<button class="close" data-act="closeModal">×</button><p>${t('readingPdf')}</p>`;if(!S.modal.d)S.modal.d=importDrafts(inv);const ls=inv.lines||[];const d=S.modal.d;
+ const m=ls.filter(l=>l.status==='matched'),rv=ls.map((l,i)=>[l,i]).filter(([l])=>l.status==='review'),fe=ls.filter(l=>l.kind==='fee');const n=rv.filter(([,i])=>d[i]&&d[i].mode!=='skip').length;
+ let h=`<button class="close" data-act="closeModal" aria-label="close">×</button><h2>${t('importTitle')}</h2>
+ <p class="lead"><b>${esc(inv.supplier||'—')}</b> ${inv.no?'· '+esc(inv.no):''} · ${inv.date?fdate(new Date(inv.date+'T00:00:00Z'),{day:'numeric',month:'short'}):''} · ${t('week')} ${wnum(inv.wk)} ${t('day').toLowerCase()} ${inv.day}</p>
+ <div class="isum"><div><b class="num">${m.length}</b><span>${t('matchedLines')}</span></div><div><b class="num">${rv.length}</b><span>${t('newCount')}</span></div><div><b class="num">${dkk(inv.flowersTotal,0)}</b><span>${t('flowersTotal')}</span></div></div>`;
+ if(rv.length){h+=`<p class="small muted">${t('importNewHint')}</p><div class="newlist">`;
+  for(const [l,i] of rv){const g=d[i]||guessFlower(l,inv.supplier);const sug=l.suggest&&F(l.suggest);
+   h+=`<div class="nl ${g.mode==='skip'?'skipped':''}"><div class="nlh"><code>${esc(l.text)}</code><select id="im_mode_${i}" data-imp="${i}" data-f="mode"><option value="new" ${g.mode==='new'?'selected':''}>${t('asNew')}</option>${sug?`<option value="${l.suggest}" ${g.mode===l.suggest?'selected':''}>${esc(t('sameAs',{x:(sug.variety||gname(sug.group))+' '+(sug.length||'')}))}</option>`:''}<option value="skip" ${g.mode==='skip'?'selected':''}>${t('skip')}</option></select></div>
+   ${g.mode==='new'?`<div class="nlb"><input id="im_var_${i}" type="text" value="${esc(g.variety)}" data-imp="${i}" data-f="variety" aria-label="${t('variety')}">
+    <select id="im_grp_${i}" data-imp="${i}" data-f="group" aria-label="${t('group')}">${GROUPS.map(x=>`<option value="${x[0]}" ${g.group===x[0]?'selected':''}>${esc(gname(x[0]))}</option>`).join('')}</select>
+    <div class="sws" role="group" aria-label="${t('color')}">${COLORS.map(c=>`<button class="swb ${g.color===c[0]?'on':''}" data-act="impColor" data-i="${i}" data-k="${c[0]}" title="${esc(cname(c[0]))}" aria-label="${esc(cname(c[0]))}" aria-pressed="${g.color===c[0]}">${swatch(c[0])}</button>`).join('')}</div>
+    <div class="small muted">${esc(cname(g.color))}${g.colorGuessed?'':' ?'} · ${g.length?g.length+' cm · ':''}${g.bunch}/${t('bundles')} · ${l.stems??'—'} ${t('stems')} · ${l.ppStem!=null?dkk(l.ppStem,2):t('noPrice')} · <button class="linkbtn" data-act="impTier" data-i="${i}">${t(g.tier)}</button></div></div>`:''}</div>`}
+  h+='</div>'}
+ else h+=`<p class="okmsg">✓ ${t('allMatched')}</p>`;
+ if(fe.length)h+=`<p class="small muted">${t('feesLines')}: ${fe.length} · ${dkk(fe.reduce((a,l)=>a+(l.total||0),0))}</p>`;
+ return h+`<div class="foot">${rv.length?`<button class="btn" data-act="closeModal">${t('later')}</button><button class="btn primary" data-act="absorb" ${n?'':'disabled'}>${t('absorbN',{n})}</button>`:`<button class="btn" data-act="openInv" data-id="${id}">${t('openInvoice')}</button><button class="btn primary" data-act="closeModal">${t('done')}</button>`}</div>`}
+async function absorb(){const id=S.modal.id,inv=S.invoices[id];const d=S.modal.d||{};const lines=(inv.lines||[]).map(l=>Object.assign({},l));let n=0;S.busy=true;render();
+ for(let i=0;i<lines.length;i++){const l=lines[i],g=d[i];if(l.status!=='review'||!g||g.mode==='skip')continue;let fid=g.mode==='new'?null:g.mode;
+  if(!fid){fid='f_'+slug(`${g.group}_${g.variety}_${g.length||''}`)+'_'+Math.random().toString(36).slice(2,5);
+   const ok=await put('flowers/'+fid,{tier:g.tier,group:g.group,variety:g.variety,color:g.color,length:g.length?Number(g.length):null,supplier:g.supplier||inv.supplier||'',bunch:Number(g.bunch)||10,verified:false,sell:null,spot:'',active:true,src:`${inv.supplier||''} ${inv.no||''}`.trim(),alias:l.name?[l.name]:[],created:Date.now()});if(!ok)continue}
+  else{const f=F(fid);const al=Array.isArray(f?.alias)?f.alias.slice():[];if(l.name&&!al.includes(l.name)){al.push(l.name);upd('flowers/'+fid,{alias:al})}}
+  const stems=l.stems??(l.qty&&l.spu?l.qty*l.spu:null);const pp=l.ppStem??(l.total&&stems?Math.round(l.total/stems*100)/100:null);const pid=`${id}_${i}`;
+  Object.assign(l,{fid,status:'matched',pid,stems,ppStem:pp});
+  if(stems)await put('purchases/'+pid,{wk:inv.wk,day:inv.day||1,fid,stems,bunches:l.qty||Math.ceil(stems/(Number(g.bunch)||1)),ppStem:pp,total:l.total??null,inv:id,line:i,supplier:inv.supplier||'',demo:!!inv.demo});n++}
+ await upd('invoices/'+id,{lines});S.busy=false;S.modal=null;toast(t('absorbed',{n}));render()}
 function vInvoices(){
- let h=`<label class="drop" for="invfile"><b>${t('upload')}</b><span class="small muted">${t('uploadHint')}</span><input id="invfile" type="file" accept="application/pdf,image/*" data-act-change="invFile"></label>`;
- if(S.upload)h+=`<div class="card"><b>${esc(S.upload.name)}</b><p class="small muted">${S.upload.stage==='upload'?t('uploading'):t('reading')}</p><div class="progress"><i></i></div></div>`;
+ let h='';
  h+=`<div class="row" style="margin-top:8px"><button class="btn ghost" data-act="manualInv">${t('manualInv')}</button></div>`;
  const rev=[];for(const [id,inv] of Object.entries(S.invoices))(inv.lines||[]).forEach((l,i)=>{if(l.status==='review')rev.push([id,inv,l,i])});
  h+=`<h3 class="secth">${t('review')} <span class="muted small">${rev.length||''}</span></h3>`;
@@ -444,11 +523,13 @@ async function ignoreLine(invId,idx){const inv=S.invoices[invId];const lines=(in
 const CDN={pdf:'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js',pdfw:'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js',
  jspdf:'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',auto:'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js'};
 const loaded={};function loadScript(u){return loaded[u]||(loaded[u]=new Promise((res,rej)=>{const s=document.createElement('script');s.src=u;s.onload=res;s.onerror=()=>{delete loaded[u];rej(new Error('load '+u))};document.head.appendChild(s)}))}
-async function pdfLines(file){await loadScript(CDN.pdf);await loadScript(CDN.pdfw);const lib=window.pdfjsLib;lib.GlobalWorkerOptions.workerSrc=CDN.pdfw;
+let pdfjs=null;async function pdfLib(){if(!pdfjs){pdfjs=await import(new URL('vendor/pdfjs/pdf.min.mjs',location.href).href);pdfjs.GlobalWorkerOptions.workerSrc=new URL('vendor/pdfjs/pdf.worker.min.mjs',location.href).href}return pdfjs}
+async function pdfLines(file){const lib=await pdfLib();
  const pdf=await lib.getDocument({data:new Uint8Array(await file.arrayBuffer()),isEvalSupported:false}).promise;const out=[];const pages=[];
  for(let p=1;p<=Math.min(pdf.numPages,8);p++){const page=await pdf.getPage(p);pages.push(page);const tc=await page.getTextContent();const rows={};
-  for(const it of tc.items){if(!it.str)continue;const y=Math.round(it.transform[5]/2.5);(rows[y]=rows[y]||[]).push({x:it.transform[4],w:it.width||0,s:it.str})}
-  Object.keys(rows).map(Number).sort((a,b)=>b-a).forEach(y=>{const its=rows[y].sort((a,b)=>a.x-b.x);let line='',end=null;for(const it of its){if(end!=null)line+=(it.x-end>6?'   ':(it.x-end>1?' ':''));line+=it.s;end=it.x+it.w}out.push(line)})}
+  const items=tc.items.filter(it=>it.str&&it.str.trim()).map(it=>({x:it.transform[4],y:it.transform[5],w:it.width||0,s:it.str})).sort((a,b)=>b.y-a.y);
+  const groups=[];for(const it of items){const g=groups.find(g=>Math.abs(g.y-it.y)<2.6);if(g)g.items.push(it);else groups.push({y:it.y,items:[it]})}
+  groups.sort((a,b)=>b.y-a.y).forEach(g=>{const its=g.items.sort((a,b)=>a.x-b.x);let line='',end=null;for(const it of its){if(end!=null)line+=(it.x-end>6?'   ':(it.x-end>1?' ':''));line+=it.s;end=it.x+it.w}out.push(line)})}
  return {lines:out,pages}}
 async function pdfImages(pages){const imgs=[];for(const page of pages.slice(0,4)){const vp=page.getViewport({scale:1.6});const c=document.createElement('canvas');c.width=vp.width;c.height=vp.height;await page.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;imgs.push(await new Promise(r=>c.toBlob(r,'image/jpeg',.85)))}return imgs}
 async function shrink(file){try{const bm=await createImageBitmap(file);const k=Math.min(1,2000/Math.max(bm.width,bm.height));const c=document.createElement('canvas');c.width=Math.round(bm.width*k);c.height=Math.round(bm.height*k);c.getContext('2d').drawImage(bm,0,0,c.width,c.height);return await new Promise(r=>c.toBlob(r,'image/jpeg',.85))}catch(e){return file}}
@@ -511,7 +592,7 @@ async function handleInvoiceFile(file){if(!file)return;if(!db){toast(t('offline'
  const inv={supplier:sup,no:hdr.no,date:hdr.date||new Date().toISOString().slice(0,10),wk,day,asset,fileName:file.name,created:Date.now(),lines:out,flowersTotal:Math.round(fl*100)/100,feesTotal:Math.round(fe*100)/100,demo:false};
  const ok=await put('invoices/'+id,inv);
  if(ok)for(const l of out)if(l.status==='matched'&&l.stems)await put('purchases/'+l.pid,{wk,day,fid:l.fid,stems:l.stems,bunches:l.qty||Math.ceil(l.stems/bunchOf(l.fid)),ppStem:l.ppStem??null,total:l.total??null,inv:id,line:out.indexOf(l),supplier:sup,demo:false});
- S.upload=null;if(ok){if(!out.length)toast(t('cantRead'));S.modal={type:'invoice',id};}bump()}
+ S.upload=null;if(ok){if(!out.length){toast(t('noLines'));S.modal={type:'invoice',id}}else openImport(id,inv)}bump()}
 async function newManualInv(){const id='inv_manual_'+Date.now().toString(36);const ok=await put('invoices/'+id,{supplier:lastSupplier(),no:'',date:new Date().toISOString().slice(0,10),wk:S.week,day:S.bday===2?2:1,asset:null,created:Date.now(),lines:[],flowersTotal:0,feesTotal:0,manual:true,demo:false});if(ok){S.modal={type:'invoice',id};render()}}
 async function setInvField(id,field,val){const inv=S.invoices[id];if(!inv)return;const patch={};patch[field]=field==='day'?Number(val):val;await upd('invoices/'+id,patch);
  for(const l of inv.lines||[])if(l.pid)await upd('purchases/'+l.pid,patch)}
@@ -707,7 +788,7 @@ async function csv(kind){let rows=[],name='';const fl=S.flowers;
 
 /* ---------- modal render ---------- */
 function renderModal(){const el=document.getElementById('modal');if(!S.modal){el.innerHTML='';return}
- const body=S.modal.type==='flower'?mFlower():S.modal.type==='invoice'?mInvoice():mLine();
+ const body=S.modal.type==='flower'?mFlower():S.modal.type==='invoice'?mInvoice():S.modal.type==='import'?mImport():mLine();
  const old=el.querySelector('.sheet');const sc=old?old.scrollTop:0;
  el.innerHTML=`<div class="scrim" data-act="scrim"><div class="sheet" role="dialog" aria-modal="true"><div class="grab"></div>${body}</div></div>`;
  const nw=el.querySelector('.sheet');if(nw&&old)nw.scrollTop=sc}
@@ -715,6 +796,13 @@ function renderModal(){const el=document.getElementById('modal');if(!S.modal){el
 /* ---------- events ---------- */
 const A={
  openOrig:e=>openOriginal(e.dataset.id),
+ ftab:e=>{S.ftab=e.dataset.k;render()},
+ goBuy:e=>{S.week=e.dataset.wk;S.bday=Number(e.dataset.day);S.tab='buying';window.scrollTo(0,0);render()},
+ goCount:()=>{S.week=TODAY_WK;S.tab='count';window.scrollTo(0,0);render()},
+ alert:e=>{const k=e.dataset.k;if(k==='invoices')S.tab='invoices';else if(k==='prices'){S.tab='flowers';S.ftab='prices';S.pNoPrice=true}else{S.tab='flowers';S.ftab='list';S.onlyUnv=true}window.scrollTo(0,0);render()},
+ impColor:e=>{const g=S.modal.d[e.dataset.i];g.color=e.dataset.k;g.colorGuessed=true;render()},
+ impTier:e=>{const g=S.modal.d[e.dataset.i];g.tier=g.tier==='luxury'?'regular':'luxury';render()},
+ absorb:()=>{if(!S.busy)absorb()},
  ptier:e=>{S.ptier=e.dataset.k;render()},pNoPrice:()=>{S.pNoPrice=!S.pNoPrice;render()},plPdf:e=>pdfPriceList(e.dataset.k),
  applyMk:e=>{if(e.dataset.k==='all'&&S.confirm!=='mkall'){S.confirm='mkall';render();return}S.confirm=null;applyMarkup(e.dataset.k)},
  loginMode:()=>{S.loginMode=S.loginMode==='up'?'in':'up';S.loginMsg='';render()},
@@ -765,6 +853,7 @@ document.addEventListener('input',ev=>{const el=ev.target;const ds=el.dataset;
  if(ds.cnt){const v=Math.max(0,parseInt(el.value,10)||0);editEntries(ds.cnt,en=>{en[Number(ds.i)][ds.f]=v});return}
  if(ds.rt){const v=el.value;editEntries(ds.rt,en=>{en[Number(ds.i)].rt=v});return}
  if(ds.sell){setSell(ds.sell,el.value);return}
+ if(ds.imp!=null&&S.modal?.type==='import'){const g=S.modal.d[ds.imp];g[ds.f]=el.value;if(el.tagName==='SELECT')render();return}
  if(ds.pset&&el.tagName!=='SELECT'){const v=Number(el.value);if(!isNaN(v)&&el.value!==''){saveSettings({prices:Object.assign(pset(),{[ds.pset]:v})})}return}
  if(ds.sshare){saveSettings({share1:Number(el.value)/100});return}
 });
@@ -779,6 +868,11 @@ document.addEventListener('change',ev=>{const el=ev.target;const ds=el.dataset;
 document.addEventListener('submit',async ev=>{const f=ev.target;ev.preventDefault();
  if(f.id==='loginForm')return doLogin(f);
  if(f.id==='teamForm'){const em=f.querySelector('#tm_email').value.trim().toLowerCase();if(!/^\S+@\S+\.\S+$/.test(em))return;const {error}=await sb.from('team').insert({email:em});if(error)toast(errMsg(error));else{toast(t('saved'));loadTeam()}}});
+let dragN=0;
+document.addEventListener('dragenter',ev=>{if(S.auth!=='in'||!ev.dataTransfer||![...ev.dataTransfer.types].includes('Files'))return;dragN++;document.body.classList.add('dropping')});
+document.addEventListener('dragleave',()=>{dragN=Math.max(0,dragN-1);if(!dragN)document.body.classList.remove('dropping')});
+document.addEventListener('dragover',ev=>{if(ev.dataTransfer&&[...ev.dataTransfer.types].includes('Files'))ev.preventDefault()});
+document.addEventListener('drop',ev=>{if(!ev.dataTransfer?.files?.length)return;ev.preventDefault();dragN=0;document.body.classList.remove('dropping');if(S.auth!=='in')return;const f=[...ev.dataTransfer.files].find(f=>/pdf|image/.test(f.type)||/\.pdf$/i.test(f.name));if(f)handleInvoiceFile(f)});
 document.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&S.modal){S.modal=null;render()}});
 
 render();connect();

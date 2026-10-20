@@ -9,16 +9,17 @@ Weekly cut-flower stock for Florén Studio (Copenhagen): flower list stacked by 
 
 | Screen | What it does |
 |---|---|
-| Квіти / Flowers | Luxury and Regular tabs, flowers grouped by colour → group → variety and length. Search and filters. Add a flower in a few taps. |
+| Головна / Home | Drop zone for supplier invoices, next buying day with item count and estimate, count status, this week's figures and what needs attention. |
+| Склад / Stock | *List*: Luxury and Regular tabs, flowers grouped by colour → group → variety and length, search and filters. *Selling prices*: price per stem, VAT, pack price, markup, margin and price-list PDF/CSV. |
 | Закупівля / Buying | Day 1 and Day 2 buying sheets grouped by supplier → tier → colour: have, need, order (bunches), last price, estimate. Every suggestion shows its reasoning and can be edited. A4 PDF. |
-| Рахунки / Invoices | Upload a PDF or photo. Lines are matched to flowers; unmatched lines go to a review list. The original file stays attached. |
+| Рахунки / Invoices | Drop or pick a supplier A4 PDF (or photo) – here, on Home, or anywhere on the page on desktop. Lines are matched to your flowers; unknown lines are turned into new flowers (group, variety, colour, length, pack size, tier and price taken from the invoice) and added to stock with one tap. The original file stays attached. |
 | Підрахунок / Count | Cooler-style screen with big +/− for bunches and loose stems, condition (fresh, usable, sell first, not usable) and a required reason for every discard. Saving carries usable leftovers into next week's opening stock. |
 | Огляд / Insights | Bought, used, left, waste %, cost per stem and income (when a selling price is set), per flower, colour and tier. Next week's suggested order. |
-| Ще / More | Buying days and times, language, team members, A4 templates, CSV exports, remove demo data. |
+| ⚙ Settings (top bar) | Buying days and times, language, team members, A4 templates, CSV exports, remove demo data. |
 
 **Suggestions:** typical weekly use (average of up to the last 12 counted weeks) minus usable leftovers, rounded up to whole bunches, split between the two buying days by past buying (or the day‑1 share setting). With fewer than 8 counted weeks they are marked *low confidence*. Seasonality is not shown before 52 weeks of data. Prices are only ever taken from invoices.
 
-**Invoice reading:** Dutch auction-style PDFs (like Verdel: `2x 25 50 Rosa Red Naomi S 60 9,69 484,50`) are parsed in the browser and matched by the product names saved on each flower. Photos and other layouts go to the `read-invoice` edge function, which uses Claude (needs an Anthropic API key, see below).
+**Invoice reading:** Dutch auction-style PDFs (like Verdel: `2x 25 50 Rosa Red Naomi S 60 9,69 484,50`) are parsed in the browser with a bundled pdf.js (`vendor/pdfjs`, Apache-2.0) and matched by the product names saved on each flower. Photos and other layouts go to the `read-invoice` edge function, which uses Claude (needs an Anthropic API key, see below).
 
 ## Data
 
