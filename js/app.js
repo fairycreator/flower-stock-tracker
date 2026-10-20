@@ -29,6 +29,11 @@ const REASONS=['wilted','broken','botrytis','overblown','arrival','cold','other'
 
 /* ---------- i18n ---------- */
 const T={uk:{
+ fcFoot:'~ – частина тижнів без підрахунку, тому витрата оцінена за закупленою кількістю. Що більше збережених підрахунків, то точніший прогноз.',rWeek:'Тиждень',rTrend:'Тренди і прогноз',chartTitle:'Стебла за тижнями',chartSub:'Останні {n} тиж. · куплено, використано, списано',lgBought:'Куплено',lgUsed:'Використано',lgLeft:'Залишок',lgWaste:'Списано',lgNotCounted:'не пораховано',
+ spendTitle:'Куди йдуть гроші',spendSub:'Витрати на квіти за {n} тиж.',byTierShort:'Рівень',byColorShort:'Колір',
+ regularsTitle:'Постійні позиції',regularsSub:'Квіти, які купуєте найчастіше, і скільки йде за тиждень',boughtWeeks:'Куплено тижнів',perWeek:'Витрата/тиж.',trend:'Тренд',lastPrice:'Ост. ціна',
+ forecastTitle:'Прогноз на тиждень {w}',forecastSub:'Зважене середнє витрати мінус придатні залишки, округлено до пачок',fcNeed:'Прогноз, шт',fcLeft:'Залишок',fcBuy:'Купити',fcCost:'≈ Вартість',fcTotal:'Разом прогноз закупівлі',
+ proxyNote:'{n} тиж. без підрахунку – взято закуплену кількість',noTrend:'Даних поки замало. Тренди з’являться після кількох тижнів закупівель і підрахунків.',up:'росте',down:'падає',flat:'стабільно',
  home:'Головна',stock:'Склад',reports:'Звіти',invoicesTab:'Рахунки',dropHere:'Перетягніть PDF рахунку сюди',dropOr:'або натисніть, щоб вибрати файл – PDF чи фото',dropActive:'Відпустіть, щоб завантажити рахунок',
  nextBuy:'Наступна закупівля',openList:'Відкрити список',positions:'позицій',countCard:'Підрахунок у кінці тижня',countStart:'Почати підрахунок',countContinue:'Продовжити підрахунок',countDoneCard:'Збережено – залишки перейшли в тиждень {w}',countNone:'Ще не почато',countDraft:'{n} квітів пораховано',
  needsAttention:'Потребує уваги',linesToReview:'Рядки рахунків на перевірку: {n}',flowersUnv:'Неперевірені квіти: {n}',flowersNoPrice:'Куплені квіти без ціни продажу: {n}',allGood:'Усе в порядку.',thisWeek:'Цей тиждень',lastWeekWaste:'Списання, тиждень {w}',
@@ -44,12 +49,12 @@ const T={uk:{
  noFlowers:'Тут ще немає квітів',noFlowersHint:'Додайте першу кнопкою внизу.',noMatch:'Немає квітів за цим пошуком.',
  day:'День',invoices:'Рахунки',have:'Є',need:'Потрібно',order:'Замовити',price:'Ціна/шт',estTotal:'Орієнтовно',bundles:'пач',
  noPrice:'ціни ще немає',why:'Чому?',reset:'Скинути до пропозиції',showAll:'Показати всі квіти',showSuggested:'Лише пропозиції',
- lowConf:'Низька точність',lowConfText:'Пропозиції базуються на {n} тиж. підрахунків. Менше 8 тижнів – це грубий розрахунок, коригуйте його.',
- okConf:'Дані за {n} тиж.',noData:'Підрахунків ще немає – пропозиції з’являться після першого збереженого тижневого підрахунку.',
+ lowConf:'Низька точність',lowConfText:'Прогноз базується на {n} тиж. даних. Менше 8 тижнів – це грубий розрахунок, коригуйте його.',
+ okConf:'Дані за {n} тиж.',noData:'Даних ще немає – прогноз з’явиться після першої закупівлі або підрахунку.',
  seasonNote:'Сезонність з’явиться лише після повного року даних ({n}/52 тиж.).',
  est:'оцінка',pdf:'A4 PDF',csv:'CSV',totalStems:'Стебел',totalCost:'Орієнтовна сума',missingPrice:'без ціни',
  noRows:'На цей день нічого не запропоновано.',rsNone:'Історії ще немає – вкажіть кількість самі.',
- rs:'Звичайна витрата {typ} шт/тиж. (середнє за {n} тиж.{s}) − {left} придатних залишків = {net} шт → {b} × {bunch} = {stems} шт. Розподіл: день 1 – {d1}, день 2 – {d2} ({src}).',
+ rs:'Прогноз витрати {typ} шт/тиж. (зважене середнє за {n} тиж.{s}, нові тижні важать більше) − {left} придатних залишків = {net} шт → {b} × {bunch} = {stems} шт. Розподіл: день 1 – {d1}, день 2 – {d2} ({src}).',
  rsHist:'за минулими закупівлями',rsSet:'за налаштуваннями',
  upload:'Завантажити рахунок',uploadHint:'PDF або фото. Рядки зчитуються й зіставляються автоматично.',reading:'Читаю рахунок…',uploading:'Зберігаю оригінал…',
  review:'На перевірку',reviewEmpty:'Усе зіставлено.',matched:'зіставлено',ignored:'пропущено',toReview:'на перевірку',
@@ -84,6 +89,11 @@ const T={uk:{
 },
 en:{
  sub:'Flower stock',
+ fcFoot:'~ – some weeks were not counted, so use is estimated from the quantity bought. The more counts you save, the better the forecast.',rWeek:'Week',rTrend:'Trends & forecast',chartTitle:'Stems per week',chartSub:'Last {n} weeks · bought, used, wasted',lgBought:'Bought',lgUsed:'Used',lgLeft:'Left',lgWaste:'Wasted',lgNotCounted:'not counted',
+ spendTitle:'Where the money goes',spendSub:'Flower spend over {n} weeks',byTierShort:'Tier',byColorShort:'Colour',
+ regularsTitle:'Regulars',regularsSub:'Flowers you buy most often and how much goes per week',boughtWeeks:'Weeks bought',perWeek:'Use/week',trend:'Trend',lastPrice:'Last price',
+ forecastTitle:'Forecast for week {w}',forecastSub:'Weighted average use minus usable leftovers, rounded to packs',fcNeed:'Forecast, stems',fcLeft:'Left',fcBuy:'Buy',fcCost:'≈ Cost',fcTotal:'Total forecast purchase',
+ proxyNote:'{n} wk without count – bought quantity used',noTrend:'Not enough data yet. Trends appear after a few weeks of buying and counting.',up:'rising',down:'falling',flat:'steady',
  home:'Home',stock:'Stock',reports:'Reports',invoicesTab:'Invoices',dropHere:'Drop a supplier invoice PDF here',dropOr:'or tap to choose a file – PDF or photo',dropActive:'Release to upload the invoice',
  nextBuy:'Next buying day',openList:'Open list',positions:'items',countCard:'End-of-week count',countStart:'Start count',countContinue:'Continue count',countDoneCard:'Saved – leftovers moved into week {w}',countNone:'Not started',countDraft:'{n} flowers counted',
  needsAttention:'Needs attention',linesToReview:'{n} invoice lines waiting for review',flowersUnv:'{n} flowers not verified',flowersNoPrice:'{n} bought flowers without a selling price',allGood:'All good.',thisWeek:'This week',lastWeekWaste:'Waste, week {w}',
@@ -105,12 +115,12 @@ week:'Week',flowers:'Flowers',buying:'Buying',count:'Count',insights:'Insights',
  noFlowers:'No flowers here yet',noFlowersHint:'Add the first one with the button below.',noMatch:'No flowers match the search.',
  day:'Day',invoices:'Invoices',have:'Have',need:'Need',order:'Order',price:'Price/stem',estTotal:'Estimate',bundles:'bn',
  noPrice:'no price yet',why:'Why?',reset:'Reset to suggestion',showAll:'Show all flowers',showSuggested:'Show suggested only',
- lowConf:'Low confidence',lowConfText:'Suggestions are based on {n} week(s) of counts. Under 8 weeks they are a rough estimate – adjust them.',
- okConf:'{n} weeks of data',noData:'No counts yet – suggestions start after the first saved weekly count.',
+ lowConf:'Low confidence',lowConfText:'The forecast is based on {n} week(s) of data. Under 8 weeks it is a rough estimate – adjust it.',
+ okConf:'{n} weeks of data',noData:'No data yet – the forecast starts after the first purchase or count.',
  seasonNote:'Seasonal patterns appear only after a full year of data ({n}/52 weeks).',
  est:'est.',pdf:'A4 PDF',csv:'CSV',totalStems:'Stems',totalCost:'Estimated cost',missingPrice:'without price',
  noRows:'Nothing suggested for this day.',rsNone:'No history yet – set the quantity yourself.',
- rs:'Typical use {typ} stems/week (avg of {n} week{s}) − {left} usable leftovers = {net} stems → {b} × {bunch} = {stems} stems. Split: day 1 {d1}, day 2 {d2} ({src}).',
+ rs:'Forecast use {typ} stems/week (weighted average of {n} week{s}, recent weeks count more) − {left} usable leftovers = {net} stems → {b} × {bunch} = {stems} stems. Split: day 1 {d1}, day 2 {d2} ({src}).',
  rsHist:'from past buying',rsSet:'from settings',
  upload:'Upload invoice',uploadHint:'PDF or photo. Lines are read and matched automatically.',reading:'Reading invoice…',uploading:'Saving original…',
  review:'To review',reviewEmpty:'Everything is matched.',matched:'matched',ignored:'ignored',toReview:'to review',
@@ -159,7 +169,7 @@ const today=new Date();const TODAY_WK=isoKey(new Date(Date.UTC(today.getFullYear
 const MIN_WK=addW(TODAY_WK,-16);
 
 /* ---------- state ---------- */
-const S={tab:'home',ftab:'list',tier:'luxury',week:TODAY_WK,q:'',fg:'',fc:'',fl:'',onlyUnv:false,bday:1,showAll:false,why:{},cntFilter:'stock',
+const S={tab:'home',ftab:'list',rtab:'trend',tier:'luxury',week:TODAY_WK,q:'',fg:'',fc:'',fl:'',onlyUnv:false,bday:1,showAll:false,why:{},cntFilter:'stock',
  flowers:{},settings:null,purch:{},cl:{},cm:{},orders:{},invoices:{},conn:'wait',canWrite:true,auth:'wait',user:null,team:[],loginMode:'in',modal:null,confirm:null,upload:null,ver:0};
 let db=null,sampler=null,assets=null,dls=null,sb=null;
 const local={};const pend={};const inflight={};
@@ -199,15 +209,22 @@ function weekData(wk){return cached('wd'+wk,()=>{
   const sp=F(f)?.sell;r.income=counted&&sp!=null&&sp!==''?r.used*Number(sp)/(1+(Number(settings().prices?.vat??25))/100):null}
  return {rows:m,counted}})}
 function savedWeeksBefore(wk){return Object.keys(S.cm).filter(w=>S.cm[w]?.saved&&w<wk).sort()}
-function hist(wk){return cached('h'+wk,()=>{const weeks=[];for(let i=1;i<=12;i++){const w=addW(wk,-i);if(S.cm[w]?.saved)weeks.push(w)}
- const per={};for(const w of weeks){const wd=weekData(w);for(const f in wd.rows){const r=wd.rows[f];if(r.open+r.bought<=0)continue;const h=per[f]||(per[f]={uses:[],d1:0,tot:0});h.uses.push(r.used);h.d1+=r.b1;h.tot+=r.bought}}
- return {weeks,per,dataWeeks:savedWeeksBefore(wk).length}})}
+function activeWeeks(beforeWk){return cached('aw'+beforeWk,()=>{const set=new Set();for(const id in S.purch){const w=S.purch[id].wk;if(w<beforeWk)set.add(w)}for(const w in S.cm)if(S.cm[w]?.saved&&w<beforeWk)set.add(w);return [...set].sort()})}
+function hist(wk){return cached('h'+wk,()=>{const all=activeWeeks(wk);const weeks=all.slice(-12);const per={};
+ for(const w of weeks){const wd=weekData(w);for(const f in wd.rows){const r=wd.rows[f];if(r.open+r.bought<=0)continue;if(!per[f])per[f]={first:w,d1:0,tot:0,proxy:0,bought:0}}}
+ for(const f in per){const h=per[f];h.vals=[];h.weeks=[];for(const w of weeks){if(w<h.first)continue;const wd=weekData(w);const r=wd.rows[f];let v=0;
+  if(r){if(wd.counted)v=r.used||0;else{v=r.bought;if(r.bought>0)h.proxy++}h.d1+=r.b1;h.tot+=r.bought;if(r.bought>0)h.bought++}
+  h.vals.push(v);h.weeks.push(w)}
+  const k=h.vals.length;let sw=0,sv=0;h.vals.forEach((v,i)=>{sw+=i+1;sv+=v*(i+1)});h.fc=k?sv/sw:0;
+  const half=Math.floor(k/2);h.trend=k>=4?(avg(h.vals.slice(half))-avg(h.vals.slice(0,half))):0;h.uses=h.vals}
+ return {weeks,per,dataWeeks:all.length}})}
+const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
 function lastPrice(fid){return cached('lp'+fid,()=>{let best=null;for(const id in S.purch){const p=S.purch[id];if(p.fid!==fid||p.ppStem==null)continue;if(!best||p.wk>best.wk||(p.wk===best.wk&&(p.day||1)>(best.day||1)))best=p}return best?best.ppStem:null})}
 function suggest(wk,fid){const h=hist(wk).per[fid];const f=F(fid);const bunch=bunchOf(fid);const wd=weekData(wk).rows[fid]||{open:0,openSell:0};
  const st=settings();if(!h||!h.uses.length)return {none:true,left:wd.open,d1:0,d2:0,b:0,typ:0,bunch};
- const typ=h.uses.reduce((a,b)=>a+b,0)/h.uses.length;const net=Math.max(0,Math.ceil(typ-wd.open));const b=Math.ceil(net/bunch);
+ const typ=h.fc;const net=Math.max(0,Math.ceil(typ-wd.open));const b=Math.ceil(net/bunch);
  const share=h.tot>0?h.d1/h.tot:st.share1;const d1=Math.round(b*share);const d2=b-d1;
- return {typ,n:h.uses.length,left:wd.open,sellLeft:wd.openSell,net,b,bunch,stems:b*bunch,d1,d2,share,src:h.tot>0?'hist':'set'}}
+ return {typ,n:h.uses.length,proxy:h.proxy,trend:h.trend,left:wd.open,sellLeft:wd.openSell,net,b,bunch,stems:b*bunch,d1,d2,share,src:h.tot>0?'hist':'set'}}
 
 /* ---------- connect ---------- */
 /* ---------- Supabase: auth, data, files, invoice reader ---------- */
@@ -386,7 +403,7 @@ function sheetRows(wk,day){return cached(`sr${wk}_${day}_${S.showAll}`,()=>{cons
 function confBanner(wk){const h=hist(wk);const n=h.dataWeeks;let s='';
  if(!n)s=`<div class="note">${t('noData')}</div>`;else if(n<8)s=`<div class="note"><span class="badge b-low">${t('lowConf')}</span> ${t('lowConfText',{n})}</div>`;else s=`<p class="small"><span class="badge b-ok">${t('okConf',{n})}</span></p>`;
  if(n<52&&n>=1)s+=`<p class="small muted">${t('seasonNote',{n})}</p>`;return s}
-function reasonText(r){const s=r.s;if(s.none)return t('rsNone');return t('rs',{typ:nf(s.typ),n:s.n,s:LANG==='uk'?'':(s.n===1?'':'s'),left:nf(s.left),net:nf(s.net),b:s.b,bunch:s.bunch,stems:nf(s.stems),d1:s.d1,d2:s.d2,src:s.src==='hist'?t('rsHist'):t('rsSet')})+(s.sellLeft?` · ${nf(s.sellLeft)} ${t('stems')} ${t('sell').toLowerCase()}`:'')}
+function reasonText(r){const s=r.s;if(s.none)return t('rsNone');return t('rs',{typ:nf(s.typ),n:s.n,s:LANG==='uk'?'':(s.n===1?'':'s'),left:nf(s.left),net:nf(s.net),b:s.b,bunch:s.bunch,stems:nf(s.stems),d1:s.d1,d2:s.d2,src:s.src==='hist'?t('rsHist'):t('rsSet')})+(s.proxy?` · ${t('proxyNote',{n:s.proxy})}`:'')+(s.sellLeft?` · ${nf(s.sellLeft)} ${t('stems')} ${t('sell').toLowerCase()}`:'')}
 function vBuying(){const d1=dayLabel(1),d2=dayLabel(2);const rc=reviewCount();
  let h=`<div class="seg" role="group"><button data-act="bday" data-k="1" aria-pressed="${S.bday===1}">${esc(d1.top)}<small>${esc(d1.time)}</small></button><button data-act="bday" data-k="2" aria-pressed="${S.bday===2}">${esc(d2.top)}<small>${esc(d2.time)}</small></button></div>`;
  if(S.bday===3)S.bday=1;
@@ -635,7 +652,10 @@ function statTable(title,obj,labelFn,counted){const keys=Object.keys(obj);if(!ke
  return `<h3 class="secth">${title}</h3><div class="tblwrap"><table><thead><tr><th></th><th>${t('open')}</th><th>${t('bought')}</th><th>${t('used')}</th><th>${t('left')}</th><th>${t('waste')}</th><th>${t('cost')}</th><th>${t('cps')}</th><th>${t('income')}</th></tr></thead><tbody>
  ${keys.map(k=>{const a=obj[k];return `<tr><td>${labelFn(k)}</td><td class="num">${nf(a.open)}</td><td class="num">${nf(a.bought)}</td><td class="num">${counted?nf(a.used):'—'}</td><td class="num">${counted?nf(a.left):'—'}</td><td class="num">${counted?pct(a.wastePct):'—'}${counted&&a.wastePct?`<span class="wastebar" style="width:${Math.min(40,Math.round(a.wastePct*120))}px"></span>`:''}</td><td class="num">${dkk(a.cost)}</td><td class="num">${dkk(a.cps,2)}</td><td class="num">${a.hasInc?dkk(a.income):'—'}</td></tr>`}).join('')}</tbody></table></div>`}
 function weekRowsList(wk){const wd=weekData(wk);return Object.entries(wd.rows).filter(([fid,r])=>F(fid)&&(r.open||r.bought||r.left))}
-function vInsights(){const wk=S.week;const wd=weekData(wk);const rows=weekRowsList(wk);const tot=agg(rows,()=>'all').all;const counted=wd.counted;
+function vInsights(){
+ const seg=`<div class="seg seg-sm" role="group"><button data-act="rtab" data-k="trend" aria-pressed="${S.rtab==='trend'}">${t('rTrend')}</button><button data-act="rtab" data-k="week" aria-pressed="${S.rtab!=='trend'}">${t('rWeek')} ${wnum(S.week)}</button></div>`;
+ return seg+(S.rtab==='trend'?vTrends():vWeekReport())}
+function vWeekReport(){const wk=S.week;const wd=weekData(wk);const rows=weekRowsList(wk);const tot=agg(rows,()=>'all').all;const counted=wd.counted;
  let h=`<h2 class="secth" style="margin-top:14px">${t('week')} ${wnum(wk)}</h2>`;
  if(!rows.length)return h+`<div class="empty"><p>${S.conn==='on'?'—':''}</p></div>`+nextSugg(wk);
  if(!counted)h+=`<div class="note info">${t('notCounted')}</div>`;
@@ -648,9 +668,50 @@ function vInsights(){const wk=S.week;const wd=weekData(wk);const rows=weekRowsLi
  const byF=agg(sortFlowers(rows.map(([fid,r])=>[fid,F(fid),r])).map(([fid])=>[fid,wd.rows[fid]]),f=>f);
  h+=statTable(t('byFlower'),byF,fid=>{const f=F(fid);return `${swatch(f.color)} ${esc(f.variety||gname(f.group))} <span class="muted">${f.length||''}</span>`},counted);
  if(counted){const rs={};rows.forEach(([,r])=>{for(const k in r.reasons)rs[k]=(rs[k]||0)+r.reasons[k]});const ks=Object.keys(rs);if(ks.length)h+=`<div class="card"><h3>${t('reasonsT')}</h3><div class="chips">${ks.sort((a,b)=>rs[b]-rs[a]).map(k=>`<span class="chip">${t(k)} <b class="num">${nf(rs[k])}</b></span>`).join('')}</div></div>`}
- h+=nextSugg(wk);
+ h+=forecastCard(addW(wk,1));
  h+=`<div class="row" style="margin-top:16px"><button class="btn" data-act="pdfSum">${t('summary')} · ${t('pdf')}</button><button class="btn" data-act="csv" data-k="stats">${t('exStats')} · CSV</button></div>`;
  return h}
+/* ---------- trends & forecast ---------- */
+function spark(vals,w=96,h=26){if(!vals.length)return '';const mx=Math.max(1,...vals);const step=vals.length>1?(w-4)/(vals.length-1):0;
+ const pts=vals.map((v,i)=>[2+i*step,h-3-(v/mx)*(h-6)]);const d=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+ const area=d+` L ${pts[pts.length-1][0].toFixed(1)} ${h-2} L ${pts[0][0].toFixed(1)} ${h-2} Z`;const l=pts[pts.length-1];
+ return `<svg class="spark" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" aria-hidden="true"><path d="${area}" class="sa"/><path d="${d}" class="sl"/><circle cx="${l[0].toFixed(1)}" cy="${l[1].toFixed(1)}" r="2.6" class="sd"/></svg>`}
+function trendArrow(tr,base){if(!base)return '<span class="muted">—</span>';const r=tr/Math.max(1,base);if(r>.15)return `<span class="tr up" title="${t('up')}">↗</span>`;if(r<-.15)return `<span class="tr down" title="${t('down')}">↘</span>`;return `<span class="tr flat" title="${t('flat')}">→</span>`}
+function weekChart(weeks){const data=weeks.map(w=>{const wd=weekData(w);const a=agg(weekRowsList(w),()=>'a').a||{open:0,bought:0,used:0,left:0,bad:0,cost:0};return {w,counted:wd.counted,bought:a.bought,used:a.used,left:a.left-a.bad,bad:a.bad,cost:a.cost,open:a.open}});
+ const W=760,H=260,pl=44,pr=12,pt=26,pb=34;const iw=W-pl-pr,ih=H-pt-pb;const mx=Math.max(10,...data.map(d=>Math.max(d.bought+d.open,d.used+d.left+d.bad)));
+ const nice=v=>{const p=Math.pow(10,Math.floor(Math.log10(v)));const n=v/p;return (n<=2?2:n<=5?5:10)*p};const top=nice(mx);const y=v=>pt+ih-(v/top)*ih;
+ const bw=Math.min(46,iw/data.length*.62);const gx=i=>pl+(i+.5)*(iw/data.length);
+ let g='';for(let k=0;k<=4;k++){const v=top*k/4,yy=y(v);g+=`<line x1="${pl}" x2="${W-pr}" y1="${yy}" y2="${yy}" class="gl"/><text x="${pl-6}" y="${yy+4}" class="ax" text-anchor="end">${nf(v)}</text>`}
+ let b='';data.forEach((d,i)=>{const x=gx(i)-bw/2;const tip=`${t('week')} ${wnum(d.w)}: ${t('lgBought')} ${nf(d.bought)}${d.counted?` · ${t('lgUsed')} ${nf(d.used)} · ${t('lgWaste')} ${nf(d.bad)}`:` · ${t('lgNotCounted')}`} · ${dkk(d.cost)}`;
+  if(d.counted){let base=0;for(const [v,c] of [[d.used,'bu'],[d.left,'bl'],[d.bad,'bw']]){if(v>0){b+=`<rect x="${x}" y="${y(base+v)}" width="${bw}" height="${Math.max(0,y(base)-y(base+v))}" class="${c}" rx="3"><title>${esc(tip)}</title></rect>`;base+=v}}}
+  else b+=`<rect x="${x}" y="${y(d.bought+d.open)}" width="${bw}" height="${Math.max(0,y(0)-y(d.bought+d.open))}" class="bb" rx="3"><title>${esc(tip)}</title></rect>`;
+  b+=`<text x="${gx(i)}" y="${H-pb+16}" class="ax" text-anchor="middle">${wnum(d.w)}</text>`;if(d.cost)b+=`<text x="${gx(i)}" y="${y(Math.max(d.bought+d.open,d.used+d.left+d.bad))-6}" class="vl" text-anchor="middle">${nf(d.cost/1000,1)}k</text>`});
+ return `<div class="chartwrap"><svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(t('chartTitle'))}">${g}<line x1="${pl}" x2="${W-pr}" y1="${y(0)}" y2="${y(0)}" class="bl0"/>${b}</svg></div>
+ <div class="legend"><span><i class="bu"></i>${t('lgUsed')}</span><span><i class="bl"></i>${t('lgLeft')}</span><span><i class="bw"></i>${t('lgWaste')}</span><span><i class="bb"></i>${t('lgBought')} (${t('lgNotCounted')})</span><span class="muted small">DKK: k = 1 000</span></div>`}
+function spendBars(weeks){const by={},bt={};let tot=0;for(const w of weeks){const wd=weekData(w);for(const f in wd.rows){const fl=F(f);if(!fl)continue;const c=wd.rows[f].cost;tot+=c;by[fl.color]=(by[fl.color]||0)+c;const k=fl.tier==='luxury'?'luxury':'regular';bt[k]=(bt[k]||0)+c}}
+ if(!tot)return '';const bar=(obj,lab,col)=>{const ks=Object.keys(obj).filter(k=>obj[k]>0).sort((a,b)=>obj[b]-obj[a]);
+  return `<div class="sbrow"><span class="lbl">${lab}</span><div class="sbar">${ks.map(k=>`<i style="width:${(obj[k]/tot*100).toFixed(2)}%;background:${col(k)}" title="${esc((lab===t('byTierShort')?t(k):cname(k))+' · '+dkk(obj[k])+' · '+pct(obj[k]/tot))}"></i>`).join('')}</div>
+  <div class="sbkeys">${ks.slice(0,8).map(k=>`<span>${lab===t('byTierShort')?`<i class="dotk" style="background:${col(k)}"></i>${t(k)}`:swatch(k)+esc(cname(k))} <b class="num">${pct(obj[k]/tot)}</b></span>`).join('')}</div></div>`};
+ const hex=k=>CMAP[k]?.hex==='mix'?'conic-gradient(#DE4F86,#F1CA33,#6C9350,#6B3D93)':(CMAP[k]?.hex||'#ccc');
+ return `<div class="card"><h3>${t('spendTitle')}</h3><p class="small muted">${t('spendSub',{n:weeks.length})} · <b>${dkk(tot)}</b></p>${bar(bt,t('byTierShort'),k=>k==='luxury'?'var(--lux)':'var(--accent)')}${bar(by,t('byColorShort'),k=>hex(k).startsWith('conic')?'linear-gradient(90deg,#DE4F86,#F1CA33,#6C9350,#6B3D93)':hex(k))}</div>`}
+function vTrends(){const nx=addW(TODAY_WK,1);const h=hist(nx);const weeks=h.weeks;
+ if(!weeks.length)return `<div class="empty"><h3>${t('rTrend')}</h3><p>${t('noTrend')}</p></div>`;
+ let out=`<div class="card"><h3>${t('chartTitle')}</h3><p class="small muted">${t('chartSub',{n:weeks.length})}</p>${weekChart(weeks)}</div>`;
+ out+=spendBars(weeks);
+ // regulars
+ const reg=Object.entries(h.per).filter(([f])=>F(f)).map(([f,x])=>{const m={};x.weeks.forEach((w,i)=>m[w]=x.vals[i]);const vals=weeks.map(w=>m[w]||0);return {f,x:Object.assign({},x,{vals,weeks}),score:x.bought*1e6+x.fc}}).sort((a,b)=>b.score-a.score).slice(0,24);
+ out+=`<div class="card"><h3>${t('regularsTitle')}</h3><p class="small muted">${t('regularsSub')}</p><div class="tblwrap" style="box-shadow:none"><table class="rtable"><thead><tr><th>${t('variety')}</th><th>${t('boughtWeeks')}</th><th>${t('perWeek')}</th><th></th><th>${t('trend')}</th><th>${t('lastPrice')}</th></tr></thead><tbody>
+ ${reg.map(({f,x})=>{const fl=F(f);const dots=x.weeks.map((w,i)=>`<i class="wd ${x.vals[i]>0?'on':''}" title="${t('week')} ${wnum(w)}: ${nf(x.vals[i])}"></i>`).join('');
+  return `<tr><td>${swatch(fl.color)} <b>${esc(fl.variety||gname(fl.group))}</b> <span class="muted">${fl.length||''}</span><div class="small muted">${esc(gname(fl.group))}${fl.tier==='luxury'?` · <span class="badge b-lux">${t('luxury')}</span>`:''}</div></td>
+  <td><div class="wdots">${dots}</div><span class="small muted">${x.bought}/${weeks.length}</span></td><td class="num">${nf(x.fc)}</td><td>${spark(x.vals)}</td><td>${trendArrow(x.trend,x.fc)}</td><td class="num">${lastPrice(f)!=null?dkk(lastPrice(f),2):'—'}</td></tr>`}).join('')}</tbody></table></div></div>`;
+ out+=forecastCard(nx);return out}
+function forecastCard(nx){const items=sortFlowers(flowerList()).map(([id,f])=>[id,f,suggest(nx,id)]).filter(x=>!x[2].none&&(x[2].b>0||x[2].typ>0)).sort((a,b)=>b[2].typ-a[2].typ);
+ const h=hist(nx);let tot=0,miss=0;const rows=items.map(([id,f,s])=>{const pp=lastPrice(id);const c=pp!=null?s.stems*pp:null;if(c!=null)tot+=c;else if(s.b)miss++;return [id,f,s,c]});
+ let out=`<div class="card fc"><div class="fchead"><div><h3>${t('forecastTitle',{w:wnum(nx)})}</h3><p class="small muted">${t('forecastSub')}</p></div><div class="fctot"><span>${t('fcTotal')}</span><b class="num">${dkk(tot)}</b>${miss?`<small class="muted">${miss} ${t('missingPrice')}</small>`:''}</div></div>${confBanner(nx)}`;
+ if(!rows.length)return out+`<p class="muted">—</p></div>`;
+ out+=`<div class="tblwrap" style="box-shadow:none"><table><thead><tr><th>${t('variety')}</th><th>${t('fcNeed')}</th><th>${t('fcLeft')}</th><th>${t('fcBuy')}</th><th>${t('day')} 1 / 2</th><th>${t('fcCost')}</th></tr></thead><tbody>
+ ${rows.map(([id,f,s,c])=>`<tr><td>${swatch(f.color)} ${esc(f.variety||gname(f.group))} <span class="muted">${f.length||''}</span>${s.proxy?` <span class="badge b-low" title="${esc(t('proxyNote',{n:s.proxy}))}">~</span>`:''}</td><td class="num">${nf(s.typ)}</td><td class="num">${nf(s.left)}</td><td class="num"><b>${s.b}</b> ${t('bundles')} <span class="muted small">(${nf(s.stems)})</span></td><td class="num">${s.d1} / ${s.d2}</td><td class="num">${c!=null?dkk(c):'—'}</td></tr>`).join('')}</tbody></table></div>
+ <p class="small muted">${t('fcFoot')}</p><button class="btn ghost" data-act="goBuying" data-wk="${nx}">${t('toBuying')} →</button></div>`;return out}
 function nextSugg(wk){const nx=addW(wk,1);const items=flowerList().map(([id,f])=>[id,f,suggest(nx,id)]).filter(x=>x[2].b>0);
  let h=`<div class="card"><h3>${t('nextOrder')} · ${t('week')} ${wnum(nx)}</h3>${confBanner(nx)}`;
  if(!items.length)h+=`<p class="muted">—</p>`;else h+=`<div class="tblwrap" style="border:0"><table><thead><tr><th></th><th>${t('need')}</th><th>${t('left')}</th><th>${t('day')} 1</th><th>${t('day')} 2</th></tr></thead><tbody>${sortFlowers(items.map(x=>[x[0],x[1],x[2]])).slice(0,40).map(([id,f,s])=>`<tr><td>${swatch(f.color)} ${esc(f.variety||gname(f.group))}</td><td class="num">${nf(s.typ)}</td><td class="num">${nf(s.left)}</td><td class="num">${s.d1} ${t('bundles')}</td><td class="num">${s.d2} ${t('bundles')}</td></tr>`).join('')}</tbody></table></div>`;
@@ -796,6 +857,7 @@ function renderModal(){const el=document.getElementById('modal');if(!S.modal){el
 /* ---------- events ---------- */
 const A={
  openOrig:e=>openOriginal(e.dataset.id),
+ rtab:e=>{S.rtab=e.dataset.k;render()},
  ftab:e=>{S.ftab=e.dataset.k;render()},
  goBuy:e=>{S.week=e.dataset.wk;S.bday=Number(e.dataset.day);S.tab='buying';window.scrollTo(0,0);render()},
  goCount:()=>{S.week=TODAY_WK;S.tab='count';window.scrollTo(0,0);render()},
